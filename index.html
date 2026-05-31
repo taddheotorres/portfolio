@@ -68,8 +68,12 @@
       width: 8px;
       height: 16px;
       background: var(--accent);
+      animation: blink 1s step-end infinite;
     }
 
+    @keyframes blink {
+      50% { opacity: 0; }
+    }
 
 
     .grid {
