@@ -49,12 +49,10 @@
       display: flex;
       align-items: center;
       gap: 0.5rem;
-      overflow: hidden;
     }
 
     .terminal-line .prompt {
       color: var(--accent);
-      animation: pulse 2s ease-in-out infinite;
     }
 
     .terminal-line .path {
@@ -63,10 +61,6 @@
 
     .terminal-line .type-text {
       display: inline-block;
-      overflow: hidden;
-      white-space: nowrap;
-      animation: typewriter 2s steps(20) forwards;
-      max-width: fit-content;
     }
 
     .terminal-line .cursor {
@@ -74,38 +68,9 @@
       width: 8px;
       height: 16px;
       background: var(--accent);
-      animation: blink 1s step-end infinite;
     }
 
-    @keyframes blink {
-      50% { opacity: 0; }
-    }
 
-    @keyframes typewriter {
-      from { width: 0; }
-      to { width: 100%; }
-    }
-
-    @keyframes fadeInUp {
-      from { opacity: 0; transform: translateY(12px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    @keyframes glow {
-      0%, 100% { box-shadow: 0 0 4px rgba(166, 227, 161, 0.1); }
-      50% { box-shadow: 0 0 12px rgba(166, 227, 161, 0.25); }
-    }
-
-    @keyframes pulse {
-      0%, 100% { opacity: 1; }
-      50% { opacity: 0.6; }
-    }
-
-    @keyframes slideBorder {
-      0% { border-color: var(--border); }
-      50% { border-color: var(--accent-dim); }
-      100% { border-color: var(--border); }
-    }
 
     .grid {
       display: grid;
@@ -127,7 +92,6 @@
       font-weight: 700;
       color: var(--text);
       margin-bottom: 0.25rem;
-      animation: glow 3s ease-in-out infinite;
     }
 
     .sidebar .title {
@@ -199,18 +163,8 @@
       border: 1px solid var(--border);
       border-radius: 12px;
       padding: 1.5rem;
-      animation: fadeInUp 0.5s ease-out forwards;
-      opacity: 0;
       transition: border-color 0.3s;
     }
-
-    .section:hover {
-      animation: slideBorder 2s ease-in-out infinite;
-    }
-
-    .section:nth-child(2) { animation-delay: 0.1s; }
-    .section:nth-child(3) { animation-delay: 0.2s; }
-    .section:nth-child(4) { animation-delay: 0.3s; }
 
     .section-header {
       display: flex;
@@ -393,9 +347,7 @@
       color: var(--accent);
     }
 
-    .footer .exit-code:hover {
-      animation: pulse 0.8s ease-in-out infinite;
-    }
+
 
     /* Scrollbar */
     ::-webkit-scrollbar {
