@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Thiz | Full Stack Java Developer</title>
+  <style>
+    :root {
+      --purple-900: #1a0a1e;
+      --purple-800: #2d1533;
+      --purple-700: #4a2154;
+      --purple-600: #7B2D8E;
+      --purple-500: #9B4DBA;
+      --purple-400: #B87DD4;
+      --purple-300: #D4AEE8;
+      --purple-200: #E8CCF0;
+      --purple-100: #F5EAF8;
+      --text: #2d2d2d;
+      --text-light: #666;
+      --bg: #f8f5fa;
+      --card-bg: #ffffff;
+      --border: #e8e0ec;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      padding: 2rem 1rem;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    /* Header / Hero */
+    .hero {
+      background: linear-gradient(135deg, var(--purple-900), var(--purple-700), var(--purple-600));
+      color: white;
+      padding: 3rem 2.5rem;
+      border-radius: 16px;
+      margin-bottom: 2rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      right: -20%;
+      width: 400px;
+      height: 400px;
+      background: radial-gradient(circle, rgba(255,255,255,0.05) 0%, transparent 70%);
+      border-radius: 50%;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 1;
+    }
+
+    .hero h1 {
+      font-size: 2.5rem;
+      font-weight: 700;
+      margin-bottom: 0.25rem;
+      letter-spacing: -0.5px;
+    }
+
+    .hero .title {
+      font-size: 1.2rem;
+      color: var(--purple-300);
+      font-weight: 500;
+      margin-bottom: 1.5rem;
+    }
+
+    .hero .contact-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1.5rem;
+      font-size: 0.9rem;
+    }
+
+    .hero .contact-row a {
+      color: var(--purple-200);
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      transition: color 0.2s;
+    }
+
+    .hero .contact-row a:hover {
+      color: white;
+    }
+
+    /* Cards */
+    .card {
+      background: var(--card-bg);
+      border-radius: 12px;
+      padding: 1.75rem 2rem;
+      margin-bottom: 1.5rem;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+      border: 1px solid var(--border);
+    }
+
+    .card h2 {
+      font-size: 1.1rem;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      color: var(--purple-600);
+      margin-bottom: 1.25rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 2px solid var(--purple-100);
+    }
+
+    /* Profile */
+    .profile-text {
+      color: var(--text-light);
+      line-height: 1.7;
+    }
+
+    .profile-text strong {
+      color: var(--text);
+    }
+
+    /* Skills */
+    .skills-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+
+    .skill-tag {
+      background: var(--purple-100);
+      color: var(--purple-700);
+      padding: 0.4rem 1rem;
+      border-radius: 20px;
+      font-size: 0.85rem;
+      font-weight: 500;
+      border: 1px solid var(--purple-200);
+      transition: all 0.2s;
+    }
+
+    .skill-tag:hover {
+      background: var(--purple-600);
+      color: white;
+      border-color: var(--purple-600);
+    }
+
+    .skill-tag.highlight {
+      background: var(--purple-600);
+      color: white;
+      border-color: var(--purple-600);
+    }
+
+    /* Experience */
+    .exp-item {
+      margin-bottom: 1.25rem;
+    }
+
+    .exp-item:last-child {
+      margin-bottom: 0;
+    }
+
+    .exp-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      flex-wrap: wrap;
+      margin-bottom: 0.25rem;
+    }
+
+    .exp-header h3 {
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    .exp-header .exp-role {
+      color: var(--purple-600);
+      font-weight: 500;
+      font-size: 0.9rem;
+    }
+
+    .exp-header .exp-date {
+      color: var(--text-light);
+      font-size: 0.85rem;
+    }
+
+    .exp-desc {
+      color: var(--text-light);
+      font-size: 0.9rem;
+      list-style: none;
+      padding-left: 0;
+    }
+
+    .exp-desc li {
+      position: relative;
+      padding-left: 1.2rem;
+      margin-bottom: 0.2rem;
+    }
+
+    .exp-desc li::before {
+      content: '›';
+      position: absolute;
+      left: 0;
+      color: var(--purple-500);
+      font-weight: bold;
+    }
+
+    /* Projects */
+    .project-item {
+      margin-bottom: 1.25rem;
+    }
+
+    .project-item:last-child {
+      margin-bottom: 0;
+    }
+
+    .project-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      flex-wrap: wrap;
+      margin-bottom: 0.25rem;
+    }
+
+    .project-header h3 {
+      font-size: 1rem;
+      font-weight: 600;
+    }
+
+    .project-header .project-links a {
+      color: var(--purple-500);
+      text-decoration: none;
+      font-size: 0.85rem;
+      margin-left: 0.75rem;
+    }
+
+    .project-header .project-links a:hover {
+      text-decoration: underline;
+    }
+
+    .project-tech {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+      margin: 0.5rem 0;
+    }
+
+    .project-tech span {
+      background: var(--purple-50);
+      color: var(--purple-700);
+      padding: 0.2rem 0.7rem;
+      border-radius: 12px;
+      font-size: 0.75rem;
+      border: 1px solid var(--purple-100);
+    }
+
+    .project-desc {
+      color: var(--text-light);
+      font-size: 0.9rem;
+    }
+
+    /* Education */
+    .edu-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      flex-wrap: wrap;
+    }
+
+    .edu-item h3 {
+      font-size: 1rem;
+      font-weight: 600;
+    }
+
+    .edu-item .edu-meta {
+      color: var(--text-light);
+      font-size: 0.85rem;
+    }
+
+    .edu-detail {
+      color: var(--text-light);
+      font-size: 0.9rem;
+      margin-top: 0.25rem;
+      width: 100%;
+    }
+
+    /* Languages */
+    .lang-item {
+      display: flex;
+      justify-content: space-between;
+      padding: 0.3rem 0;
+      font-size: 0.9rem;
+    }
+
+    .lang-item .lang-name {
+      font-weight: 500;
+    }
+
+    .lang-item .lang-level {
+      color: var(--text-light);
+    }
+
+    /* Footer */
+    .footer {
+      text-align: center;
+      color: var(--text-light);
+      font-size: 0.8rem;
+      padding: 1rem 0 0.5rem;
+      border-top: 1px solid var(--border);
+      margin-top: 0.5rem;
+    }
+
+    /* Responsive */
+    @media (max-width: 600px) {
+      body { padding: 1rem 0.75rem; }
+      .hero { padding: 2rem 1.5rem; }
+      .hero h1 { font-size: 1.8rem; }
+      .card { padding: 1.25rem 1.25rem; }
+      .hero .contact-row { flex-direction: column; gap: 0.5rem; }
+    }
+
+    @media print {
+      body { padding: 0.5in; background: white; }
+      .hero { border-radius: 0; padding: 1.5rem 1rem; }
+      .card { box-shadow: none; border: 1px solid #ddd; break-inside: avoid; }
+      .skill-tag:hover { background: var(--purple-100); color: var(--purple-700); }
+      .container { max-width: 100%; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- Hero -->
+    <div class="hero">
+      <div class="hero-content">
+        <h1>Taddheo de Jesús<br>Carballo Torres</h1>
+        <div class="title">Full Stack Java Developer • Estudiante de Ingeniería</div>
+        <div class="contact-row">
+          <a href="mailto:taddheotorrespro@gmail.com">✉ taddheotorrespro@gmail.com</a>
+          <a href="tel:+526121071523">📞 612 107 1523</a>
+          <a href="https://linkedin.com/in/taddheo-torres-a5420227b" target="_blank">🔗 linkedin.com/in/taddheo-torres</a>
+          <a href="https://github.com/taddheotorres" target="_blank">🐙 github.com/taddheotorres</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Profile -->
+    <div class="card">
+      <h2>Perfil Profesional</h2>
+      <p class="profile-text">
+        Estudiante de <strong>Ingeniería en Desarrollo de Software</strong> en la UABCS (5.º semestre),
+        apasionado por construir aplicaciones web completas con <strong>Java</strong> y <strong>Spring Boot</strong>
+        en el backend y <strong>Angular</strong> en el frontend. Con experiencia en integración de pagos,
+        WebSockets, Docker y bases de datos relacionales. Busco mi primera oportunidad formal como
+        <strong>Desarrollador Java Trainee / JR</strong> para crecer profesionalmente y aportar valor real.
+      </p>
+    </div>
+
+    <!-- Skills -->
+    <div class="card">
+      <h2>Tecnologías</h2>
+      <div class="skills-grid">
+        <span class="skill-tag highlight">Java 17/21</span>
+        <span class="skill-tag highlight">Spring Boot 4.x</span>
+        <span class="skill-tag">Spring Data JPA / Hibernate</span>
+        <span class="skill-tag">Spring Security</span>
+        <span class="skill-tag">REST APIs</span>
+        <span class="skill-tag">WebSockets (STOMP)</span>
+        <span class="skill-tag highlight">Angular 17</span>
+        <span class="skill-tag">TypeScript</span>
+        <span class="skill-tag">RxJS</span>
+        <span class="skill-tag">MySQL</span>
+        <span class="skill-tag">Docker / Docker Compose</span>
+        <span class="skill-tag">Git</span>
+        <span class="skill-tag">Maven</span>
+        <span class="skill-tag">JWT</span>
+        <span class="skill-tag">Stripe API</span>
+        <span class="skill-tag">MapStruct</span>
+        <span class="skill-tag">JUnit / Testcontainers</span>
+      </div>
+    </div>
+
+    <!-- Experience -->
+    <div class="card">
+      <h2>Experiencia</h2>
+      <div class="exp-item">
+        <div class="exp-header">
+          <div>
+            <h3>Cafetería</h3>
+            <span class="exp-role">Barista</span>
+          </div>
+          <span class="exp-date">2023 — 2024</span>
+        </div>
+        <ul class="exp-desc">
+          <li>Atención al cliente en entorno de alta presión y ritmo rápido.</li>
+          <li>Gestión de múltiples pedidos simultáneos con precisión y calidad consistente.</li>
+          <li>Responsable de apertura, cierre y manejo de efectivo.</li>
+          <li>Coordinación en equipo para asegurar tiempos de entrega óptimos.</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Projects -->
+    <div class="card">
+      <h2>Proyectos</h2>
+      <div class="project-item">
+        <div class="project-header">
+          <h3>Livestate</h3>
+          <div class="project-links">
+            <a href="https://github.com/taddheotorres/livestate" target="_blank">GitHub →</a>
+          </div>
+        </div>
+        <p class="project-desc">
+          SaaS de gestión de bienes raíces. Conecta anfitriones con inquilinos. Incluye
+          autenticación JWT, WebSockets para mensajería en tiempo real, pagos con Stripe,
+          y despliegue con Docker Compose.
+        </p>
+        <div class="project-tech">
+          <span>Java 17</span>
+          <span>Spring Boot 4.0.6</span>
+          <span>Angular 17</span>
+          <span>MySQL</span>
+          <span>Docker</span>
+          <span>JWT</span>
+          <span>Stripe</span>
+          <span>WebSockets</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Education -->
+    <div class="card">
+      <h2>Educación</h2>
+      <div class="edu-item">
+        <div>
+          <h3>Ingeniería en Desarrollo de Software</h3>
+          <div class="edu-detail">Universidad Autónoma de Baja California Sur (UABCS)</div>
+        </div>
+        <span class="edu-meta">2023 — 2028 · 5.º semestre</span>
+      </div>
+    </div>
+
+    <!-- Languages -->
+    <div class="card">
+      <h2>Idiomas</h2>
+      <div class="lang-item">
+        <span class="lang-name">Español</span>
+        <span class="lang-level">Nativo</span>
+      </div>
+      <div class="lang-item">
+        <span class="lang-name">Inglés</span>
+        <span class="lang-level">Intermedio — lectura técnica</span>
+      </div>
+    </div>
+
+    <div class="footer">
+      La Paz, Baja California Sur, México
+    </div>
+  </div>
+</body>
+</html>
