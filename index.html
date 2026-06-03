@@ -24,6 +24,8 @@
 
     * { margin: 0; padding: 0; box-sizing: border-box; }
 
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
     body {
       font-family: 'JetBrains Mono', monospace;
       background: var(--bg);
@@ -353,18 +355,6 @@
 
 
 
-    #rain-left, #rain-right {
-      position: fixed;
-      top: 0;
-      width: 70px;
-      height: 100vh;
-      pointer-events: none;
-      z-index: 0;
-      opacity: 0.25;
-    }
-    #rain-left { left: 0; }
-    #rain-right { right: 0; }
-
     /* Scrollbar */
     ::-webkit-scrollbar {
       width: 6px;
@@ -396,8 +386,6 @@
   </style>
 </head>
 <body>
-  <canvas id="rain-left"></canvas>
-  <canvas id="rain-right"></canvas>
   <div class="container">
     <div class="terminal-line">
       <span class="prompt">❯</span>
@@ -492,6 +480,8 @@
             <span class="skill-tag">Stripe API</span>
             <span class="skill-tag">MapStruct</span>
             <span class="skill-tag">JUnit / Testcontainers</span>
+            <span class="skill-tag">VS Code</span>
+            <span class="skill-tag">IntelliJ IDEA</span>
           </div>
         </section>
 
@@ -566,47 +556,5 @@
       </div>
     </div>
   </div>
-  <script>
-    const chars = 'アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン0123456789<>/{}[]|&*%$#+-';
-    const accent = '#a6e3a1';
-
-    function initRain(canvas) {
-      const ctx = canvas.getContext('2d');
-      let w, h, cols, drops;
-
-      function resize() {
-        w = canvas.width = canvas.offsetWidth * window.devicePixelRatio;
-        h = canvas.height = window.innerHeight * window.devicePixelRatio;
-        ctx.scale(window.devicePixelRatio, window.devicePixelRatio);
-        cols = Math.floor(canvas.offsetWidth / 14);
-        drops = Array.from({ length: cols }, () => Math.random() * -100);
-      }
-
-      function draw() {
-        ctx.fillStyle = 'rgba(10,10,15,0.05)';
-        ctx.fillRect(0, 0, canvas.offsetWidth, window.innerHeight);
-
-        ctx.font = '13px JetBrains Mono, monospace';
-        for (let i = 0; i < drops.length; i++) {
-          const char = chars[Math.floor(Math.random() * chars.length)];
-          const x = i * 14 + 4;
-          const y = drops[i] * 14;
-          const alpha = Math.min(1, 0.3 + (y / window.innerHeight) * 0.7);
-          ctx.fillStyle = `rgba(166, 227, 161, ${alpha})`;
-          ctx.fillText(char, x, y);
-          if (y > window.innerHeight && Math.random() > 0.975) drops[i] = 0;
-          drops[i]++;
-        }
-        requestAnimationFrame(draw);
-      }
-
-      resize();
-      window.addEventListener('resize', resize);
-      draw();
-    }
-
-    initRain(document.getElementById('rain-left'));
-    initRain(document.getElementById('rain-right'));
-  </script>
 </body>
 </html>
