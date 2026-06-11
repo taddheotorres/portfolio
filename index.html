@@ -364,6 +364,49 @@
       border: 1px solid var(--border);
     }
 
+    /* Lang toggle */
+    .lang-toggle {
+      position: fixed;
+      top: 1rem;
+      right: 1rem;
+      z-index: 100;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 0.4rem 0.6rem;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      color: var(--text-muted);
+      cursor: pointer;
+      transition: all 0.2s;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .lang-toggle:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    .lang-toggle .globe {
+      font-size: 14px;
+    }
+
+    .lang-toggle .active-lang {
+      color: var(--accent);
+      font-weight: 600;
+    }
+
+    @media (max-width: 768px) {
+      .lang-toggle {
+        top: 0.5rem;
+        right: 0.5rem;
+        padding: 0.3rem 0.5rem;
+        font-size: 11px;
+      }
+    }
+
     /* Scrollbar */
     ::-webkit-scrollbar {
       width: 6px;
@@ -395,11 +438,15 @@
   </style>
 </head>
 <body>
+  <button class="lang-toggle" id="langToggle" onclick="toggleLang()">
+    <span class="globe">🌐</span>
+    <span><span class="active-lang" id="langLabel">ES</span> / EN</span>
+  </button>
   <div class="container">
     <div class="terminal-line">
       <span class="prompt">❯</span>
       <span class="path">~/portfolio</span>
-      <span class="type-text">cat about.md</span>
+      <span class="type-text" data-i18n="terminal">cat about.md</span>
       <span class="cursor"></span>
     </div>
 
@@ -407,15 +454,15 @@
       <!-- Sidebar -->
       <aside class="sidebar">
         <div class="name">Taddheo de Jesús<br>Carballo Torres</div>
-        <div class="title">Full Stack Java Developer</div>
+        <div class="title" data-i18n="role">Full Stack Java Developer</div>
 
         <div class="sidebar-section">
-          <div class="label">Contacto</div>
+          <div class="label" data-i18n="contact">Contacto</div>
           <a class="contact-item" href="mailto:taddheotorrespro@gmail.com">
             <span class="icon">@</span> taddheotorrespro@gmail.com
           </a>
           <a class="contact-item" href="https://wa.me/526121071523" target="_blank">
-            <span class="icon">~</span> 612 107 1523 <span style="font-size:0.7em;opacity:0.6">(Solo WhatsApp)</span>
+            <span class="icon">~</span> 612 107 1523 <span style="font-size:0.7em;opacity:0.6" data-i18n="whatsapp">(Solo WhatsApp)</span>
           </a>
           <a class="contact-item" href="https://linkedin.com/in/taddheo-torres-a5420227b" target="_blank">
             <span class="icon">in</span> taddheo-torres
@@ -426,26 +473,26 @@
         </div>
 
         <div class="sidebar-section">
-          <div class="label">Ubicación</div>
+          <div class="label" data-i18n="location">Ubicación</div>
           <div class="contact-item">
             <span class="icon">📍</span> La Paz, BCS, México
           </div>
         </div>
 
         <div class="sidebar-section">
-          <div class="label">Idiomas</div>
+          <div class="label" data-i18n="languages">Idiomas</div>
           <div class="lang-item">
             <span>Español</span>
-            <span class="level">Nativo</span>
+            <span class="level" data-i18n="native">Nativo</span>
           </div>
           <div class="lang-item">
             <span>Inglés</span>
-            <span class="level">Intermedio (técnico)</span>
+            <span class="level" data-i18n="english-level">Intermedio (técnico)</span>
           </div>
         </div>
 
         <div class="sidebar-section terminal-section">
-          <div class="label">Terminal</div>
+          <div class="label" data-i18n="terminal-title">Terminal</div>
           <canvas id="donut-canvas"></canvas>
         </div>
       </aside>
@@ -456,25 +503,17 @@
         <section class="section">
           <div class="section-header">
             <span class="arrow">▶</span>
-            <h2>Perfil Profesional</h2>
+            <h2 data-i18n="section-profile">Perfil Profesional</h2>
             <span class="dots">···</span>
           </div>
-          <p class="profile-text">
-            <strong>Estudiante de Ingeniería en Desarrollo de Software</strong> en UABCS (5.º semestre),
-            construyendo aplicaciones web completas con <code>Java</code> / <code>Spring Boot</code>
-            en el backend y <code>Angular</code> en el frontend.
-            Experiencia en integración de pagos <code>Stripe</code>, WebSockets en tiempo real,
-            <code>Docker</code> y bases de datos relacionales.
-            Buscando primera oportunidad formal como <strong class="highlight">Dev Java Trainee / JR</strong>
-            o <strong class="highlight">Ciberseguridad entry-level</strong>.
-          </p>
+          <p class="profile-text" data-i18n-html="profile">
         </section>
 
         <!-- Skills -->
         <section class="section">
           <div class="section-header">
             <span class="arrow">▶</span>
-            <h2>Tecnologías</h2>
+            <h2 data-i18n="section-skills">Tecnologías</h2>
             <span class="dots">···</span>
           </div>
           <div class="skills-grid">
@@ -506,7 +545,7 @@
         <section class="section">
           <div class="section-header">
             <span class="arrow">▶</span>
-            <h2>Proyectos</h2>
+            <h2 data-i18n="section-projects">Proyectos</h2>
             <span class="dots">···</span>
           </div>
           <div class="project-item">
@@ -516,10 +555,7 @@
                 <a href="https://github.com/taddheotorres/no-swipe-overview" target="_blank">gh/view →</a>
               </div>
             </div>
-            <p class="project-desc">
-              Extensión para GNOME Shell que bloquea el gesto de swipe que abre el overview.
-              Útil para quienes usan ArcMenu u otro lanzador. Escrita en JavaScript para GNOME 48.
-            </p>
+            <p class="project-desc" data-i18n="project-nso">
             <div class="project-tech">
               <span>JavaScript</span>
               <span>GNOME Shell</span>
@@ -533,11 +569,7 @@
                 <a href="https://github.com/taddheotorres/livestate" target="_blank">gh/view →</a>
               </div>
             </div>
-            <p class="project-desc">
-              SaaS de gestión de bienes raíces. Conecta anfitriones con inquilinos.
-              Autenticación JWT, WebSockets para mensajería en tiempo real,
-              pagos con Stripe y despliegue con Docker Compose.
-            </p>
+            <p class="project-desc" data-i18n="project-livestate">
             <div class="project-tech">
               <span>Java 17</span>
               <span>Spring Boot 4.0.6</span>
@@ -556,12 +588,7 @@
                 <a href="https://github.com/taddheotorres/honeypot-api" target="_blank">gh/view →</a>
               </div>
             </div>
-            <p class="project-desc">
-              API señuelo que simula endpoints vulnerables para detectar intentos de ataque
-              en tiempo real. Endpoints falsos de inicio de sesión, productos, búsqueda y
-              usuarios que registran payloads maliciosos y los muestran en un dashboard
-              vía WebSocket.
-            </p>
+            <p class="project-desc" data-i18n="project-honeypot">
             <div class="project-tech">
               <span>Java 21</span>
               <span>Spring Boot 3.4</span>
@@ -579,10 +606,7 @@
                 <a href="https://github.com/taddheotorres/commitstory" target="_blank">gh/view →</a>
               </div>
             </div>
-            <p class="project-desc">
-              Dashboard analítico que cuenta la historia visual de un repositorio Git.
-              Sincroniza commits vía JGit, genera narrativas markup y expone API REST.
-            </p>
+            <p class="project-desc" data-i18n="project-commitstory">
             <div class="project-tech">
               <span>Java 21</span>
               <span>Spring Boot 3.4.1</span>
@@ -597,15 +621,15 @@
         <section class="section">
           <div class="section-header">
             <span class="arrow">▶</span>
-            <h2>Educación</h2>
+            <h2 data-i18n="section-education">Educación</h2>
             <span class="dots">···</span>
           </div>
           <div class="edu-item">
             <div>
-              <h3>Ingeniería en Desarrollo de Software</h3>
-              <div class="edu-detail">Universidad Autónoma de Baja California Sur (UABCS)</div>
+              <h3 data-i18n="edu-degree">Ingeniería en Desarrollo de Software</h3>
+              <div class="edu-detail" data-i18n="edu-school">Universidad Autónoma de Baja California Sur (UABCS)</div>
             </div>
-            <span class="edu-meta">ago 2024 — actual · 5.º semestre</span>
+            <span class="edu-meta" data-i18n="edu-date">ago 2024 — actual · 5.º semestre</span>
           </div>
         </section>
 
@@ -616,6 +640,121 @@
     </div>
   </div>
   <script>
+    const i18n = {
+      terminal: {
+        es: 'cat about.md',
+        en: 'cat about.en.md'
+      },
+      role: {
+        es: 'Full Stack Java Developer',
+        en: 'Full Stack Java Developer'
+      },
+      contact: {
+        es: 'Contacto',
+        en: 'Contact'
+      },
+      location: {
+        es: 'Ubicación',
+        en: 'Location'
+      },
+      languages: {
+        es: 'Idiomas',
+        en: 'Languages'
+      },
+      native: {
+        es: 'Nativo',
+        en: 'Native'
+      },
+      'english-level': {
+        es: 'Intermedio (técnico)',
+        en: 'Intermediate (technical)'
+      },
+      'terminal-title': {
+        es: 'Terminal',
+        en: 'Terminal'
+      },
+      'section-profile': {
+        es: 'Perfil Profesional',
+        en: 'Professional Profile'
+      },
+      profile: {
+        es: '<strong>Estudiante de Ingeniería en Desarrollo de Software</strong> en UABCS (5.º semestre), construyendo aplicaciones web completas con <code>Java</code> / <code>Spring Boot</code> en el backend y <code>Angular</code> en el frontend. Experiencia en integración de pagos <code>Stripe</code>, WebSockets en tiempo real, <code>Docker</code> y bases de datos relacionales. Buscando primera oportunidad formal como <strong class="highlight">Dev Java Trainee / JR</strong> o <strong class="highlight">Ciberseguridad entry-level</strong>.',
+        en: '<strong>Software Engineering student</strong> at UABCS (5th semester), building full-stack web applications with <code>Java</code> / <code>Spring Boot</code> on the backend and <code>Angular</code> on the frontend. Experience integrating <code>Stripe</code> payments, real-time WebSockets, <code>Docker</code>, and relational databases. Seeking first formal opportunity as a <strong class="highlight">Java Dev Trainee / JR</strong> or <strong class="highlight">Cybersecurity entry-level</strong>.'
+      },
+      'section-skills': {
+        es: 'Tecnologías',
+        en: 'Technologies'
+      },
+      'section-projects': {
+        es: 'Proyectos',
+        en: 'Projects'
+      },
+      'project-nso': {
+        es: 'Extensión para GNOME Shell que bloquea el gesto de swipe que abre el overview. Útil para quienes usan ArcMenu u otro lanzador. Escrita en JavaScript para GNOME 48.',
+        en: 'GNOME Shell extension that blocks the swipe gesture from opening the overview. Useful for ArcMenu or other launcher users. Written in JavaScript for GNOME 48.'
+      },
+      'project-livestate': {
+        es: 'SaaS de gestión de bienes raíces. Conecta anfitriones con inquilinos. Autenticación JWT, WebSockets para mensajería en tiempo real, pagos con Stripe y despliegue con Docker Compose.',
+        en: 'Real estate management SaaS. Connects hosts with tenants. JWT authentication, WebSockets for real-time messaging, Stripe payments, and Docker Compose deployment.'
+      },
+      'project-honeypot': {
+        es: 'API señuelo que simula endpoints vulnerables para detectar intentos de ataque en tiempo real. Endpoints falsos de inicio de sesión, productos, búsqueda y usuarios que registran payloads maliciosos y los muestran en un dashboard vía WebSocket.',
+        en: 'Decoy API that simulates vulnerable endpoints to detect attack attempts in real time. Fake login, products, search, and user endpoints log malicious payloads and display them on a dashboard via WebSocket.'
+      },
+      'project-commitstory': {
+        es: 'Dashboard analítico que cuenta la historia visual de un repositorio Git. Sincroniza commits vía JGit, genera narrativas markup y expone API REST.',
+        en: 'Analytic dashboard that tells the visual story of a Git repository. Syncs commits via JGit, generates markup narratives, and exposes a REST API.'
+      },
+      'section-education': {
+        es: 'Educación',
+        en: 'Education'
+      },
+      'edu-degree': {
+        es: 'Ingeniería en Desarrollo de Software',
+        en: 'Software Engineering'
+      },
+      'edu-school': {
+        es: 'Universidad Autónoma de Baja California Sur (UABCS)',
+        en: 'Autonomous University of Baja California Sur (UABCS)'
+      },
+      'edu-date': {
+        es: 'ago 2024 — actual · 5.º semestre',
+        en: 'Aug 2024 — present · 5th semester'
+      },
+      whatsapp: {
+        es: '(Solo WhatsApp)',
+        en: '(WhatsApp only)'
+      }
+    };
+
+    let currentLang = localStorage.getItem('portfolio-lang') || 'es';
+
+    function applyLang(lang) {
+      currentLang = lang;
+      localStorage.setItem('portfolio-lang', lang);
+      document.querySelectorAll('[data-i18n]').forEach(el => {
+        const key = el.dataset.i18n;
+        if (i18n[key] && i18n[key][lang]) {
+          el.textContent = i18n[key][lang];
+        }
+      });
+      document.querySelectorAll('[data-i18n-html]').forEach(el => {
+        const key = el.dataset.i18nHtml;
+        if (i18n[key] && i18n[key][lang]) {
+          el.innerHTML = i18n[key][lang];
+        }
+      });
+      document.getElementById('langLabel').textContent = lang.toUpperCase();
+      document.documentElement.lang = lang === 'es' ? 'es' : 'en';
+    }
+
+    function toggleLang() {
+      const next = currentLang === 'es' ? 'en' : 'es';
+      applyLang(next);
+    }
+
+    applyLang(currentLang);
+
     (function() {
       const canvas = document.getElementById('donut-canvas');
       if (!canvas) return;
