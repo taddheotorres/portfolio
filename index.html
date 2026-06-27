@@ -585,6 +585,7 @@
             <div class="project-header">
               <h3><span class="lang-dot">◆</span> Honeypot API</h3>
               <div class="project-links">
+                <a href="https://honeypot-api-production-a5bc.up.railway.app" target="_blank">live →</a>
                 <a href="https://github.com/taddheotorres/honeypot-api" target="_blank">gh/view →</a>
               </div>
             </div>
@@ -593,10 +594,10 @@
               <span>Java 21</span>
               <span>Spring Boot 3.4</span>
               <span>WebSocket (STOMP)</span>
-              <span>JPA / H2</span>
+              <span>JPA / PostgreSQL</span>
               <span>Angular 21</span>
-              <span>Docker Compose</span>
-              <span>OWASP</span>
+              <span>Docker / nginx</span>
+              <span>Railway</span>
             </div>
           </div>
           <div class="project-item">
@@ -701,8 +702,8 @@
         en: 'Real estate management SaaS. Connects hosts with tenants. JWT authentication, WebSockets for real-time messaging, Stripe payments, and Docker Compose deployment.'
       },
       'project-honeypot': {
-        es: 'API señuelo que simula endpoints vulnerables para detectar intentos de ataque en tiempo real. Endpoints falsos de inicio de sesión, productos, búsqueda y usuarios que registran payloads maliciosos y los muestran en un dashboard vía WebSocket.',
-        en: 'Decoy API that simulates vulnerable endpoints to detect attack attempts in real time. Fake login, products, search, and user endpoints log malicious payloads and display them on a dashboard via WebSocket.'
+        es: 'API señuelo desplegada en Railway que simula endpoints vulnerables para detectar y registrar intentos de ataque en tiempo real. Dashboard estilo terminal con monitoreo en vivo vía WebSocket STOMP, tarjetas de servidor con estado LED, timeline de ataques y página de diagnóstico con health checks.',
+        en: 'Decoy API deployed on Railway that simulates vulnerable endpoints to detect and log attack attempts in real time. Terminal-style dashboard with live WebSocket STOMP monitoring, server cards with LED status, attack timeline, and health check diagnostics page.'
       },
       'project-prismgit': {
         es: 'Dashboard analítico que cuenta la historia visual de un repositorio Git. Sincroniza commits vía JGit, genera narrativas markup y expone API REST.',
