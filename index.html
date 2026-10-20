@@ -108,9 +108,12 @@
     footer { margin-top: 34px; padding-top: 10px; border-top: 1px dashed var(--rule-strong); color: var(--muted); }
 
 
-    /* ASCII hologram: a canvas redrawn as text, with scanlines and a soft flicker on top */
+    /* the spider drawing, with scanlines and a soft flicker on top */
     .holo-wrap { position: relative; }
-    .holo { display: block; width: 100%; height: 100%; }
+    .holo-wrap { display: flex; align-items: center; justify-content: center; overflow: hidden; }
+    .spider-art { margin: 0; font: 700 6.4px/7.2px var(--mono); white-space: pre; animation: flicker 4s infinite; }
+    @keyframes flicker { 0%, 100% { opacity: 1; } 47% { opacity: 1; } 48% { opacity: .82; } 49% { opacity: 1; } 73% { opacity: .9; } 74% { opacity: 1; } }
+    @media (prefers-reduced-motion: reduce) { .spider-art { animation: none; } }
     .holo-wrap::after { content: ""; position: absolute; inset: 0; pointer-events: none;
       background: repeating-linear-gradient(0deg, rgba(255, 42, 42, .07) 0 1px, transparent 1px 3px); }
     .spider.holo-wrap { height: 260px; padding: 0; }
@@ -162,7 +165,7 @@
     <div class="win">
       <div class="titlebar"><span>~/taddheo</span><span class="spacer"></span><span class="ctl" aria-hidden="true">[-][□][x]</span></div>
       <div class="body">
-        <div class="holo-wrap" aria-hidden="true"><canvas class="holo" id="gateHolo"></canvas></div>
+        <div class="holo-wrap" aria-hidden="true"><pre class="spider-art"></pre></div>
         <div class="name" id="gateName">taddheo</div>
         <div class="role" data-i18n="gate-role">Full Stack Java Developer</div>
         <div class="label"><b>//</b> <span data-i18n="gate-label">elige a dónde ir</span></div>
@@ -197,7 +200,7 @@
       <aside>
         <div class="box">
           <span class="title">[ <b>taddheo</b> ]</span>
-          <div class="spider holo-wrap" aria-hidden="true"><canvas class="holo" id="spiderHolo"></canvas></div>
+          <div class="spider holo-wrap" aria-hidden="true"><pre class="spider-art"></pre></div>
         </div>
 
         <div class="box">
@@ -386,10 +389,7 @@
     }
     document.getElementById('banner').textContent = banner('TADDHEO');
 
-    /* Spider hologram: the original ASCII spider, kept as drawn. A flat drawing turned a full 360° collapses to
-       a line, so instead it sways like a projection (about ±35° with a slow tilt) and its parts sit on separate
-       depth layers: body in front, legs behind, faint web strands at the back. Perspective then shifts the
-       layers against each other, which is what reads as depth. */
+    /* the ASCII spider from the GitHub card: denser characters get brighter reds */
     const SPIDER = `                        :--=--:.
                        *%+-:.  .:                   .:==--:.
                       -%:      ..                 -*%##+----:.::
@@ -423,81 +423,9 @@
                .-:
                :`;
     const tier = (c) => ' .:-'.includes(c) ? 0 : '=+*'.includes(c) ? 1 : '#%'.includes(c) ? 2 : 3;
-    const POINTS = (() => {
-      const lines = SPIDER.split('\n'), W = Math.max(...lines.map((l) => l.length)), H = lines.length, pts = [];
-      const LAYER = [-6, -1, 2, 5];  // z per tier: web, legs, joints, body
-      lines.forEach((line, y) => [...line].forEach((ch, x) => {
-        if (ch !== ' ') pts.push([x - W / 2, (y - H / 2) * 2, LAYER[tier(ch)], tier(ch), ch]);
-      }));
-      for (let k = 0; k < 120; k++) {  // projector ring under the spider
-        const al = Math.PI * 2 * k / 120;
-        pts.push([Math.cos(al) * W * 0.42, H * 1.05, Math.sin(al) * W * 0.22, 0, '.']);
-      }
-      return { pts, W, H };
-    })();
-
-    function hologram(canvas) {
-      const ctx = canvas.getContext('2d');
-      const still = matchMedia('(prefers-reduced-motion: reduce)');
-      let cols = 0, rows = 0, cw = 4, ch = 7, last = 0;
-      // one spider character per cell, like the original drawing: size the font to the box instead of
-      // stretching the drawing, which would leave gaps between characters
-      function size() {
-        const r = canvas.getBoundingClientRect(), dpr = window.devicePixelRatio || 1;
-        if (!r.width) return;
-        canvas.width = r.width * dpr; canvas.height = r.height * dpr;
-        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-        const mono = getComputedStyle(root).getPropertyValue('--mono');
-        ctx.font = `700 10px ${mono}`;
-        const ratio = ctx.measureText('M').width / 10;  // glyph width per px of font size
-        ch = Math.max(4, Math.min(r.width / (POINTS.W * 1.3 * ratio), r.height / (POINTS.H * 1.45)));
-        ctx.font = `700 ${ch}px ${mono}`;
-        cw = ctx.measureText('M').width;
-        cols = Math.floor(r.width / cw); rows = Math.floor(r.height / ch);
-      }
-      function draw(now) {
-        const visible = canvas.offsetParent !== null && !document.hidden && !canvas.closest('.gone, body.gated #site');
-        if (visible && now - last > 40) {
-          last = now;
-          if (!cols) size();
-          const t = still.matches ? 0 : now / 1000;
-          const a = Math.sin(t * 0.7) * 0.55, b = 0.1 + Math.sin(t * 0.45) * 0.06;
-          const ca = Math.cos(a), sa = Math.sin(a), cb = Math.cos(b), sb = Math.sin(b);
-          const { pts, W, H } = POINTS, D = W * 2.6;  // mild perspective: enough for parallax, not enough to warp
-          const aspect = ch / cw, s = 1;  // model units are cells: x in columns, y in half rows
-          const n = cols * rows, zbuf = new Float32Array(n).fill(Infinity), tierAt = new Int8Array(n).fill(-1), glyph = new Array(n);
-          for (const [x, y, z, lvl, chr] of pts) {
-            const rx = x * ca + z * sa, rz = -x * sa + z * ca;
-            const ry = y * cb - rz * sb, rz2 = y * sb + rz * cb;
-            const f = D / (D + rz2);
-            const sx = Math.round(cols / 2 + rx * f * s), sy = Math.round(rows / 2 - 1 + ry * f / 2);
-            if (sx < 0 || sy < 0 || sx >= cols || sy >= rows) continue;
-            const k = sy * cols + sx;
-            if (rz2 < zbuf[k]) { zbuf[k] = rz2; tierAt[k] = lvl; glyph[k] = chr; }
-          }
-          const css = getComputedStyle(root);
-          const colors = [css.getPropertyValue('--red-deep'), css.getPropertyValue('--red-mid'), css.getPropertyValue('--red'),
-                          root.dataset.theme === 'light' ? '#6a0a10' : '#ff8a8a'];
-          ctx.clearRect(0, 0, canvas.width, canvas.height);
-          ctx.textBaseline = 'top';
-          ctx.globalAlpha = still.matches ? 1 : 0.86 + Math.random() * 0.14;   // hologram flicker
-          for (let y = 0; y < rows; y++) {
-            const shift = !still.matches && Math.random() < 0.004 ? (Math.random() < 0.5 ? -1 : 1) * cw : 0;  // rare glitch
-            const lines = ['', '', '', ''];
-            for (let x = 0; x < cols; x++) {
-              const k = y * cols + x;
-              for (let c = 0; c < 4; c++) lines[c] += tierAt[k] === c ? glyph[k] : ' ';
-            }
-            for (let c = 0; c < 4; c++) if (lines[c].trim()) { ctx.fillStyle = colors[c]; ctx.fillText(lines[c], shift, y * ch); }
-          }
-          ctx.globalAlpha = 1;
-        }
-        if (!still.matches) requestAnimationFrame(draw);
-      }
-      addEventListener('resize', () => { size(); if (still.matches) draw(performance.now() + 1000); });
-      size();
-      requestAnimationFrame(draw);
-    }
+    const spiderHTML = SPIDER.split('\n').map((line) =>
+      line.replace(/[ .:-]+|[=+*]+|[#%]+|@+/g, (run) => `<span class="t${tier(run[0])}">${run}</span>`)).join('\n');
+    document.querySelectorAll('.spider-art').forEach((el) => (el.innerHTML = spiderHTML));
 
     /* start screen: shown once per visit unless the link already points into the portfolio */
     const gate = document.getElementById('gate'), site = document.getElementById('site');
@@ -520,8 +448,6 @@
     document.getElementById('enter').addEventListener('click', (e) => { e.preventDefault(); enter(true); });
     addEventListener('keydown', (e) => { if (e.key === 'Escape' && !gate.classList.contains('gone')) enter(true); });
 
-    hologram(document.getElementById('gateHolo'));
-    hologram(document.getElementById('spiderHolo'));
 
     /* animated ASCII field: interfering waves on a density ramp, one fillText per row */
     (function field() {
