@@ -4,384 +4,315 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>taddheo</title>
-  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2032%2032%22%3E%3Crect%20width%3D%2232%22%20height%3D%2232%22%20rx%3D%227%22%20fill%3D%22%230b0405%22/%3E%3Ctext%20x%3D%2216%22%20y%3D%2221.5%22%20text-anchor%3D%22middle%22%20font-family%3D%22ui-monospace%2CMenlo%2CConsolas%2Cmonospace%22%20font-size%3D%2215%22%20font-weight%3D%22700%22%20fill%3D%22%23ff2a2a%22%3Eta%3C/text%3E%3C/svg%3E">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2032%2032%22%3E%3Crect%20width%3D%2232%22%20height%3D%2232%22%20rx%3D%227%22%20fill%3D%22%230b0d0e%22/%3E%3Ctext%20x%3D%2216%22%20y%3D%2221.5%22%20text-anchor%3D%22middle%22%20font-family%3D%22Inter%2CHelvetica%2CArial%2Csans-serif%22%20font-size%3D%2215%22%20font-weight%3D%22300%22%20fill%3D%22%235cc4c6%22%3Eta%3C/text%3E%3C/svg%3E">
   <meta name="description" content="Thenz · Taddheo Torres · Full Stack Java Developer · Spring Boot, Angular, Docker">
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=VT323&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
   <style>
-    /* A case file on a CRT. Dark: the file shown on a monitor (scanlines, glow, static).
-       Light: the same file printed on manila paper, with ink and red stamps and no screen effects. */
+    /* Y2K editorial: charcoal to light grey on a diagonal, thin type, hairlines, crosshairs and tiny data blocks,
+       one teal accent and a dithered glow artwork. Nothing blinks or moves, so it stays easy on the eyes. */
     :root {
-      --bg: #050101; --screen: #0b0304; --ink: #f0dede; --muted: #a07c7f; --faint: #5a3a3d; --line: #3a1518;
-      --red: #ff2a2a; --red-soft: #c0121a; --stamp: #ff3030; --glow: 0 0 6px rgba(255, 42, 42, .45);
-      --ink-glow: 0 0 4px rgba(255, 210, 210, .18); --redact: #d9c4c4;
-      --display: "VT323", ui-monospace, monospace;
-      --mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+      --bg: #0b0d0e; --bg-2: #121516; --ink: #e3e9ea; --body: #bfc8ca; --muted: #7f8a8d; --faint: #3a4144;
+      --line: #23292b; --acc: #5cc4c6; --acc-2: #2e8f93; --ice: #cdeef8;
+      --split-a: #0b0d0e; --split-b: #262b2d; --split-c: #9aa2a4;
+      --sans: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+      --mono: "JetBrains Mono", ui-monospace, Menlo, Consolas, monospace;
       color-scheme: dark;
     }
     :root[data-theme="light"] {
-      --bg: #d9cfb8; --screen: #efe6d2; --ink: #1d1512; --muted: #6b5a4c; --faint: #a8977f; --line: #c4b597;
-      --red: #b3121a; --red-soft: #8f0f15; --stamp: #c4141d; --glow: none; --ink-glow: none; --redact: #1d1512;
+      --bg: #eef1f1; --bg-2: #e3e8e8; --ink: #111516; --body: #353d3f; --muted: #66716f; --faint: #b5bdbc;
+      --line: #d2d8d8; --acc: #1f7f84; --acc-2: #2e8f93; --ice: #1f7f84;
+      --split-a: #f4f6f6; --split-b: #dfe4e4; --split-c: #7d8789;
       color-scheme: light;
     }
     @media (prefers-color-scheme: light) {
       :root:not([data-theme="dark"]) {
-        --bg: #d9cfb8; --screen: #efe6d2; --ink: #1d1512; --muted: #6b5a4c; --faint: #a8977f; --line: #c4b597;
-        --red: #b3121a; --red-soft: #8f0f15; --stamp: #c4141d; --glow: none; --ink-glow: none; --redact: #1d1512;
+        --bg: #eef1f1; --bg-2: #e3e8e8; --ink: #111516; --body: #353d3f; --muted: #66716f; --faint: #b5bdbc;
+        --line: #d2d8d8; --acc: #1f7f84; --acc-2: #2e8f93; --ice: #1f7f84;
+        --split-a: #f4f6f6; --split-b: #dfe4e4; --split-c: #7d8789;
         color-scheme: light;
       }
     }
     * { box-sizing: border-box; }
     html, body { margin: 0; }
-    body { min-height: 100vh; background: var(--bg); color: var(--ink); font: 14px/1.6 var(--mono); padding: 22px 14px; }
+    body { background: var(--bg); color: var(--body); font: 400 16px/1.7 var(--sans); -webkit-font-smoothing: antialiased; }
     a { color: inherit; }
-    .red { color: var(--red); text-shadow: var(--glow); }
-    .muted { color: var(--muted); }
+    a:focus-visible, button:focus-visible { outline: 2px solid var(--acc); outline-offset: 3px; }
+    .mono { font-family: var(--mono); }
+    .wrap { max-width: 1160px; margin: 0 auto; padding: 0 28px; position: relative; }
 
-    /* the monitor */
-    .screen { position: relative; max-width: 1100px; margin: 0 auto; background: var(--screen); border-radius: 22px;
-      padding: 30px 34px 36px; text-shadow: var(--ink-glow); overflow: hidden;
-      box-shadow: inset 0 0 120px rgba(0, 0, 0, .85), inset 0 0 18px rgba(255, 42, 42, .08), 0 0 0 10px #120607, 0 0 0 11px #2a1012, 0 30px 80px rgba(0, 0, 0, .7); }
-    :root[data-theme="light"] .screen { border-radius: 4px; box-shadow: 0 1px 0 #fff8 inset, 0 18px 40px rgba(60, 40, 20, .35); }
-    @media (prefers-color-scheme: light) { :root:not([data-theme="dark"]) .screen { border-radius: 4px; box-shadow: 0 18px 40px rgba(60, 40, 20, .35); } }
-    .fx { position: fixed; inset: 0; pointer-events: none; z-index: 20; }
-    .scan { background: repeating-linear-gradient(0deg, rgba(0, 0, 0, .28) 0 1px, transparent 1px 3px); }
-    .vignette { background: radial-gradient(ellipse at center, transparent 55%, rgba(0, 0, 0, .55) 100%); }
-    .roll { background: linear-gradient(180deg, transparent, rgba(255, 60, 60, .06) 50%, transparent); height: 22vh; top: -22vh; bottom: auto;
-      animation: roll 7s linear infinite; }
-    @keyframes roll { to { transform: translateY(130vh); } }
-    #noise { position: fixed; inset: 0; width: 100%; height: 100%; pointer-events: none; z-index: 19; opacity: .07; image-rendering: pixelated; }
-    .flicker { animation: flicker 5s infinite; }
-    @keyframes flicker { 0%, 100% { opacity: 1; } 41% { opacity: 1; } 42% { opacity: .9; } 43% { opacity: 1; } 77% { opacity: .95; } 78% { opacity: 1; } }
-    :root[data-theme="light"] .fx, :root[data-theme="light"] #noise { display: none; }
-    @media (prefers-color-scheme: light) { :root:not([data-theme="dark"]) .fx, :root:not([data-theme="dark"]) #noise { display: none; } }
-    @media (prefers-reduced-motion: reduce) { .roll, .flicker { animation: none; } .roll { display: none; } }
-
-    /* file header */
-    .strip { display: flex; flex-wrap: wrap; gap: 6px 18px; align-items: center; font-size: 12px; letter-spacing: .08em; text-transform: uppercase;
-      color: var(--muted); padding-bottom: 10px; border-bottom: 2px solid var(--line); }
-    .strip b { color: var(--ink); font-weight: 600; }
+    /* top bar */
+    .top { position: absolute; top: 0; left: 0; right: 0; z-index: 3; max-width: 1160px; margin: 0 auto; padding: 22px 28px;
+      display: flex; align-items: center; gap: 12px; font: 500 11px/1 var(--mono); letter-spacing: .14em; text-transform: uppercase; color: var(--muted); }
+    .top .logo { color: var(--ink); letter-spacing: .3em; }
+    .top .logo i { font-style: normal; color: var(--acc); }
     .spacer { flex: 1; }
-    .switch { font: 600 12px var(--mono); letter-spacing: .08em; text-transform: uppercase; background: transparent; border: 1px solid var(--line);
-      color: var(--muted); padding: 4px 8px; cursor: pointer; }
-    .switch .on { color: var(--red); text-shadow: var(--glow); }
-    .switch:hover { border-color: var(--red); color: var(--ink); }
-    button:focus-visible, a:focus-visible { outline: 2px solid var(--red); outline-offset: 2px; }
+    .toggle { font: 500 11px/1 var(--mono); letter-spacing: .14em; text-transform: uppercase; color: var(--muted); background: transparent;
+      border: 1px solid var(--line); border-radius: 999px; padding: 7px 12px; cursor: pointer; }
+    .toggle:hover { color: var(--ink); border-color: var(--muted); }
+    .toggle .on { color: var(--acc); }
 
-    .title { position: relative; margin: 26px 0 8px; }
-    .title .kicker { font: 18px/1 var(--display); letter-spacing: .2em; color: var(--muted); text-transform: uppercase; }
-    .title h1 { margin: 6px 0 0; font: 400 clamp(64px, 11vw, 128px)/.85 var(--display); color: var(--red); text-shadow: var(--glow); letter-spacing: .02em; }
-    .title .sub { margin-top: 10px; color: var(--muted); }
-    .title .sub b { color: var(--ink); font-weight: 500; }
-    .stamp { display: inline-block; font: 400 26px/1 var(--display); letter-spacing: .12em; text-transform: uppercase; color: var(--stamp);
-      border: 3px double var(--stamp); padding: 4px 12px 2px; transform: rotate(-7deg); opacity: .88; text-shadow: var(--glow);
-      -webkit-mask-image: repeating-linear-gradient(45deg, #000 0 3px, rgba(0, 0, 0, .78) 3px 5px); mask-image: repeating-linear-gradient(45deg, #000 0 3px, rgba(0, 0, 0, .78) 3px 5px); }
-    .title .stamp { position: absolute; right: 2%; top: 18px; font-size: 34px; }
+    /* hero with the diagonal split */
+    .hero { position: relative; overflow: hidden; min-height: min(760px, 92vh);
+      background: linear-gradient(152deg, var(--split-a) 0 52%, var(--split-b) 52.15%, var(--split-c) 128%); }
+    .hero .wrap { min-height: inherit; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr); align-items: center; gap: 24px; }
+    .hero .copy { position: relative; z-index: 2; padding: 96px 0 80px; }
+    .bars { display: grid; gap: 4px; width: 128px; margin-bottom: 22px; }
+    .bars span { height: 11px; background: var(--acc-2); }
+    .bars span:nth-child(1) { background: var(--ink); width: 70%; }
+    .bars span:nth-child(3) { background: var(--faint); width: 82%; }
+    .index { display: flex; align-items: flex-end; gap: 10px; color: var(--ink); }
+    .index small { font: 500 13px/1 var(--mono); color: var(--muted); padding-bottom: 14px; }
+    .index h1 { margin: 0; font: 200 clamp(72px, 11vw, 148px)/.86 var(--sans); letter-spacing: -.035em; color: var(--ink); }
+    .index .bar { flex: 1; max-width: 120px; height: 14px; margin-bottom: 18px; background: var(--acc); }
+    .who { margin-top: 18px; font: 300 clamp(18px, 2vw, 22px)/1.4 var(--sans); color: var(--ink); }
+    .who b { font-weight: 500; }
+    .tagline { margin-top: 26px; padding-left: 14px; border-left: 1px solid var(--acc); color: var(--acc); font: 300 17px/1.45 var(--sans); }
+    .cta { margin-top: 30px; display: flex; gap: 10px; flex-wrap: wrap; }
+    .btn { display: inline-flex; align-items: center; gap: 10px; text-decoration: none; font: 500 13px/1 var(--sans); letter-spacing: .02em;
+      padding: 13px 18px; border: 1px solid var(--line); color: var(--ink); background: transparent; transition: border-color .2s, background .2s, color .2s; }
+    .btn:hover { border-color: var(--acc); }
+    .btn.primary { background: var(--acc); border-color: var(--acc); color: #071011; }
+    .btn.primary:hover { background: transparent; color: var(--acc); }
+    .art { position: relative; height: min(620px, 80vh); }
+    .art canvas { position: absolute; inset: 0; width: 100%; height: 100%; }
+    .data { position: absolute; right: 2%; top: 12%; font: 400 10.5px/1.6 var(--mono); color: var(--acc); opacity: .75; text-align: right; white-space: pre; }
+    .cross { position: absolute; color: var(--acc-2); font: 300 18px/1 var(--sans); opacity: .7; pointer-events: none; }
+    .ticks { position: absolute; left: 0; right: 0; bottom: 26px; display: flex; gap: 28px; justify-content: flex-end; padding-right: 28px;
+      font: 400 10px/1 var(--mono); color: var(--muted); letter-spacing: .12em; text-transform: uppercase; }
 
-    .grid { display: grid; grid-template-columns: 330px minmax(0, 1fr); gap: 34px; margin-top: 26px; align-items: start; }
-    .grid > * { min-width: 0; }
+    /* sections */
+    section.block { padding: 96px 0 0; }
+    .shead { display: grid; grid-template-columns: 120px minmax(0, 1fr); gap: 24px; align-items: baseline; margin-bottom: 34px; }
+    .shead .no { font: 200 56px/1 var(--sans); color: var(--acc); letter-spacing: -.03em; }
+    .shead h2 { margin: 0; font: 300 30px/1.2 var(--sans); color: var(--ink); letter-spacing: -.01em; display: flex; gap: 18px; align-items: center; }
+    .shead h2::after { content: ""; flex: 1; height: 1px; background: var(--line); }
+    .sbody { margin-left: 144px; }
+    .about { max-width: 64ch; font-size: 18px; line-height: 1.75; color: var(--body); margin: 0; }
+    .about strong { color: var(--ink); font-weight: 500; }
+    .about .hl { color: var(--acc); font-weight: 500; }
 
-    /* left: the subject card */
-    .photo { position: relative; border: 1px solid var(--line); padding: 14px 10px 30px; display: grid; place-items: center; overflow: hidden; }
-    .photo::before, .photo::after { content: ""; position: absolute; width: 16px; height: 16px; border: 2px solid var(--red); }
-    .photo::before { top: 6px; left: 6px; border-right: 0; border-bottom: 0; }
-    .photo::after { bottom: 6px; right: 6px; border-left: 0; border-top: 0; }
-    .photo .cap { position: absolute; bottom: 8px; left: 12px; font-size: 11px; color: var(--muted); letter-spacing: .1em; text-transform: uppercase; }
-    .spider-art { margin: 0; font: 700 6.2px/7px var(--mono); white-space: pre; text-shadow: none; }
-    .t0 { color: #6e0a0e; } .t1 { color: var(--red-soft); } .t2 { color: var(--red); } .t3 { color: #ff9a9a; }
-    :root[data-theme="light"] .t0 { color: #c9a08e; } :root[data-theme="light"] .t3 { color: #4a0508; }
+    .stack { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); border-top: 1px solid var(--line); }
+    .stack div { padding: 18px 20px 20px 0; border-bottom: 1px solid var(--line); }
+    .stack dt { font: 500 11px/1 var(--mono); letter-spacing: .14em; text-transform: uppercase; color: var(--muted); margin-bottom: 10px; }
+    .stack dd { margin: 0; color: var(--ink); font-size: 15px; }
 
-    .fields { margin: 18px 0 0; display: grid; gap: 10px; }
-    .field dt { font-size: 10.5px; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); }
-    .field dd { margin: 2px 0 0; padding-bottom: 4px; border-bottom: 1px dotted var(--faint); }
-    .field dd a { text-decoration: none; }
-    .field dd a:hover { color: var(--red); text-decoration: underline; }
-    .status { margin: 22px 0 6px; text-align: center; }
-    .status .stamp { font-size: 22px; }
-    .redact { background: var(--redact); color: transparent; border-radius: 1px; user-select: none; text-shadow: none; }
+    .projects { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 48px; }
+    .project { padding: 26px 0 30px; border-top: 1px solid var(--line); }
+    .project .ph { display: flex; align-items: baseline; gap: 14px; }
+    .project .n { font: 400 12px/1 var(--mono); color: var(--muted); }
+    .project h3 { margin: 0; font: 300 26px/1.2 var(--sans); color: var(--ink); letter-spacing: -.01em; }
+    .badge { font: 500 10px/1 var(--mono); letter-spacing: .14em; text-transform: uppercase; color: var(--acc); border: 1px solid var(--acc); padding: 4px 7px; border-radius: 2px; }
+    .project p { margin: 12px 0 14px; color: var(--body); }
+    .tags { display: flex; flex-wrap: wrap; gap: 6px; }
+    .tags span { font: 400 11.5px/1 var(--mono); color: var(--muted); padding: 6px 8px; background: var(--bg-2); border-radius: 2px; }
+    .more { display: inline-block; margin-top: 16px; font: 500 13px/1 var(--sans); color: var(--acc); text-decoration: none; }
+    .more::after { content: " ↗"; }
+    .more:hover { text-decoration: underline; text-underline-offset: 4px; }
 
-    /* right: the annexes */
-    .annex + .annex { margin-top: 34px; }
-    .annex h2 { margin: 0 0 12px; display: flex; gap: 12px; align-items: baseline; font: 400 28px/1 var(--display); letter-spacing: .06em; text-transform: uppercase; }
-    .annex h2 .tag { color: var(--red); text-shadow: var(--glow); }
-    .annex h2 .rule { flex: 1; height: 2px; background: var(--line); align-self: center; }
-    .annex p { margin: 0; }
-    .lead { font-size: 15px; }
-    .lead strong { font-weight: 600; }
-    .lead .hl { color: var(--red); text-shadow: var(--glow); font-weight: 600; }
+    .rows { border-top: 1px solid var(--line); }
+    .rows div { display: grid; grid-template-columns: 200px minmax(0, 1fr); gap: 20px; padding: 14px 0; border-bottom: 1px solid var(--line); }
+    .rows dt { font: 500 11px/1.9 var(--mono); letter-spacing: .14em; text-transform: uppercase; color: var(--muted); }
+    .rows dd { margin: 0; color: var(--ink); }
+    .rows a { text-decoration: none; }
+    .rows a:hover { color: var(--acc); }
 
-    table.arsenal { width: 100%; border-collapse: collapse; }
-    .arsenal th, .arsenal td { text-align: left; vertical-align: top; padding: 7px 10px 7px 0; border-bottom: 1px dotted var(--faint); }
-    .arsenal th { width: 120px; font-weight: 500; font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); }
+    footer { margin-top: 110px; padding: 26px 0 40px; border-top: 1px solid var(--line); display: flex; gap: 18px; flex-wrap: wrap;
+      font: 400 11px/1 var(--mono); letter-spacing: .12em; text-transform: uppercase; color: var(--muted); }
+    footer .acc { color: var(--acc); }
 
-    .case { position: relative; padding: 14px 0 16px; border-bottom: 1px solid var(--line); }
-    .case:first-of-type { border-top: 1px solid var(--line); }
-    .case .head { display: flex; gap: 12px; align-items: baseline; flex-wrap: wrap; }
-    .case .no { font: 400 20px/1 var(--display); color: var(--muted); letter-spacing: .08em; }
-    .case h3 { margin: 0; font: 400 30px/1 var(--display); letter-spacing: .05em; text-transform: uppercase; color: var(--ink); }
-    .case .stamp { font-size: 18px; margin-left: 4px; }
-    .case p { margin: 8px 0; color: var(--muted); }
-    .case .tech { font-size: 12.5px; }
-    .case .tech b { font-weight: 500; color: var(--muted); letter-spacing: .1em; font-size: 11px; text-transform: uppercase; margin-right: 6px; }
-    .open { display: inline-block; margin-top: 8px; font: 600 12px var(--mono); letter-spacing: .12em; text-transform: uppercase; text-decoration: none;
-      color: var(--red); text-shadow: var(--glow); border-bottom: 1px solid currentColor; }
-    .open::before { content: "► "; }
-    .open:hover { background: var(--red); color: var(--screen); text-shadow: none; }
-
-    footer { margin-top: 36px; padding-top: 12px; border-top: 2px solid var(--line); display: flex; flex-wrap: wrap; gap: 8px 18px;
-      font-size: 11px; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); }
-
-    /* start screen: the same window as before, now as a terminal on the monitor */
+    /* start screen: two ways in, laid over the same diagonal */
     body.gated { overflow: hidden; }
-    body.gated .screen { visibility: hidden; }
-    .gate { position: fixed; inset: 0; z-index: 15; display: grid; place-items: center; padding: 16px; transition: opacity .35s, visibility .35s; }
+    body.gated #site { visibility: hidden; }
+    .gate { position: fixed; inset: 0; z-index: 30; display: grid; place-items: center; padding: 18px;
+      background: linear-gradient(152deg, var(--split-a) 0 56%, var(--split-b) 56.15%, var(--split-c) 135%); transition: opacity .35s, visibility .35s; }
     .gate.gone { opacity: 0; visibility: hidden; }
-    .win { width: min(420px, 100%); background: var(--screen); border: 1px solid var(--line); text-shadow: var(--ink-glow);
-      box-shadow: inset 0 0 70px rgba(0, 0, 0, .75), 0 0 0 8px #120607, 0 0 0 9px #2a1012, 0 30px 80px rgba(0, 0, 0, .7); border-radius: 14px; overflow: hidden; }
-    :root[data-theme="light"] .win { border-radius: 4px; box-shadow: 0 18px 40px rgba(60, 40, 20, .35); }
-    .win .bar { display: flex; gap: 8px; padding: 8px 12px; border-bottom: 1px solid var(--line); font-size: 12px; color: var(--muted); letter-spacing: .08em; text-transform: uppercase; }
-    .win .body { padding: 12px 20px 16px; }
-    .win .photo { border: 0; padding: 4px 0 10px; }
-    .win .photo::before, .win .photo::after { display: none; }
-    .win .name { text-align: center; font: 400 44px/1 var(--display); color: var(--red); text-shadow: var(--glow); letter-spacing: .06em; }
-    .win .role { text-align: center; color: var(--muted); font-size: 12px; padding: 6px 0 12px; border-bottom: 1px solid var(--line); }
-    .win .boot { margin: 12px 0 10px; font-size: 12px; color: var(--muted); min-height: 3.4em; white-space: pre-line; }
-    .way { display: flex; align-items: center; gap: 12px; padding: 10px 12px; border: 1px solid var(--line); text-decoration: none; }
-    .way + .way { margin-top: 8px; }
-    .way:hover, .way:focus-visible { border-color: var(--red); background: rgba(255, 42, 42, .07); outline: none; }
-    .way .key { font: 400 22px/1 var(--display); color: var(--red); text-shadow: var(--glow); width: 22px; }
-    .way .txt { flex: 1; line-height: 1.35; text-transform: uppercase; letter-spacing: .06em; font-weight: 600; font-size: 13px; }
-    .way .txt small { display: block; color: var(--muted); font-size: 11px; text-transform: none; letter-spacing: 0; font-weight: 400; }
+    .gate .card { width: min(440px, 100%); background: color-mix(in srgb, var(--bg) 88%, transparent); border: 1px solid var(--line);
+      padding: 28px 28px 22px; backdrop-filter: blur(6px); }
+    .gate .card .bars { width: 96px; margin-bottom: 18px; }
+    .gate h2 { margin: 0; font: 200 64px/.9 var(--sans); color: var(--ink); letter-spacing: -.035em; }
+    .gate .role { margin: 10px 0 24px; color: var(--muted); font-size: 14px; }
+    .way { display: flex; align-items: center; gap: 14px; padding: 15px 16px; border: 1px solid var(--line); text-decoration: none; color: var(--ink); transition: border-color .2s, background .2s; }
+    .way + .way { margin-top: 10px; }
+    .way:hover, .way:focus-visible { border-color: var(--acc); outline: none; background: color-mix(in srgb, var(--acc) 7%, transparent); }
+    .way .k { font: 500 12px/1 var(--mono); color: var(--acc); width: 18px; }
+    .way .t { flex: 1; line-height: 1.3; font-weight: 500; }
+    .way .t small { display: block; font: 400 12px/1.4 var(--mono); color: var(--muted); }
     .way .go { color: var(--muted); }
+    .gate .foot { margin-top: 18px; font: 400 10.5px/1 var(--mono); letter-spacing: .14em; text-transform: uppercase; color: var(--muted); display: flex; justify-content: space-between; }
 
-    @media (max-width: 860px) {
-      .grid { grid-template-columns: minmax(0, 1fr); }
-      .screen { padding: 22px 18px 28px; border-radius: 16px; }
-      .title .stamp { position: static; display: inline-block; margin-top: 12px; font-size: 26px; }
+    @media (max-width: 900px) {
+      .hero .wrap { grid-template-columns: minmax(0, 1fr); }
+      .hero .copy { padding: 86px 0 0; }
+      .art { height: 360px; margin-bottom: 40px; }
+      .data { display: none; }
+      .shead { grid-template-columns: minmax(0, 1fr); gap: 4px; }
+      .sbody { margin-left: 0; }
+      .stack { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .projects { grid-template-columns: minmax(0, 1fr); }
+      .rows div { grid-template-columns: minmax(0, 1fr); gap: 2px; }
     }
-    @media print {
-      .fx, #noise, .gate, .switch { display: none !important; }
-      body { background: #fff; padding: 0; }
-      .screen { box-shadow: none; background: #fff; color: #000; }
+    @media (max-width: 520px) {
+      .wrap, .top { padding-left: 18px; padding-right: 18px; }
+      .stack { grid-template-columns: minmax(0, 1fr); }
+      .ticks { display: none; }
     }
   </style>
 </head>
 <body>
-  <canvas id="noise" aria-hidden="true"></canvas>
-  <div class="fx scan" aria-hidden="true"></div>
-  <div class="fx vignette" aria-hidden="true"></div>
-  <div class="fx roll" aria-hidden="true"></div>
-
   <div class="gate" id="gate" role="dialog" aria-modal="true" aria-labelledby="gateName">
-    <div class="win flicker">
-      <div class="bar"><span>term://thenz</span><span class="spacer"></span><span aria-hidden="true">● rec</span></div>
-      <div class="body">
-        <div class="photo" aria-hidden="true"><pre class="spider-art"></pre></div>
-        <div class="name" id="gateName">THENZ</div>
-        <div class="role">Full Stack Java Developer</div>
-        <div class="boot" id="boot" aria-live="polite"></div>
-        <a class="way" href="#portfolio" id="enter">
-          <span class="key" aria-hidden="true">1</span>
-          <span class="txt"><span data-i18n="gate-open">abrir expediente</span><small>taddheotorres.github.io/portfolio</small></span>
-          <span class="go" aria-hidden="true">→</span>
-        </a>
-        <a class="way" href="https://github.com/taddheotorres" rel="noopener">
-          <span class="key" aria-hidden="true">2</span>
-          <span class="txt">github<small>github.com/taddheotorres</small></span>
-          <span class="go" aria-hidden="true">↗</span>
-        </a>
-      </div>
+    <div class="card">
+      <div class="bars" aria-hidden="true"><span></span><span></span><span></span></div>
+      <h2 id="gateName">Thenz</h2>
+      <div class="role">Full Stack Java Developer</div>
+      <a class="way" href="#portfolio" id="enter">
+        <span class="k" aria-hidden="true">01</span>
+        <span class="t">Portfolio<small>taddheotorres.github.io/portfolio</small></span>
+        <span class="go" aria-hidden="true">→</span>
+      </a>
+      <a class="way" href="https://github.com/taddheotorres" rel="noopener">
+        <span class="k" aria-hidden="true">02</span>
+        <span class="t">GitHub<small>github.com/taddheotorres</small></span>
+        <span class="go" aria-hidden="true">↗</span>
+      </a>
+      <div class="foot"><span>La Paz, BCS</span><span data-i18n="gate-hint">elige una opción</span></div>
     </div>
   </div>
 
-  <div class="screen flicker" id="site">
-    <div class="strip">
-      <span data-i18n="file-no">Expediente n.º TT-0612</span>
-      <span><span data-i18n="class">Clasificación</span>: <b data-i18n="class-val">pública</b></span>
-      <span><span data-i18n="updated">Actualizado</span>: <b>2026-10</b></span>
-      <span class="spacer"></span>
-      <button class="switch" id="lang" aria-label="Cambiar idioma / switch language"><span id="es">es</span> / <span id="en">en</span></button>
-      <button class="switch" id="theme" aria-label="Cambiar entre monitor y papel / switch between screen and paper"><span data-i18n="mode">modo</span>: <span id="modeName"></span></button>
-    </div>
-
-    <header class="title">
-      <div class="kicker" data-i18n="subject">Sujeto</div>
-      <h1>THENZ</h1>
-      <div class="sub"><b>Taddheo de Jesús Carballo Torres</b> · Full Stack Java Developer</div>
-      <span class="stamp" data-i18n="confidential">Confidencial</span>
+  <div id="site">
+    <header class="hero">
+      <span class="cross" style="left:4%;top:14%" aria-hidden="true">+</span>
+      <span class="cross" style="left:48%;top:9%" aria-hidden="true">+</span>
+      <span class="cross" style="left:7%;bottom:18%" aria-hidden="true">+</span>
+      <span class="cross" style="right:5%;bottom:30%" aria-hidden="true">+</span>
+      <nav class="top">
+        <span class="logo">TH<i>E</i>NZ</span>
+        <span class="spacer"></span>
+        <button class="toggle" id="lang" aria-label="Cambiar idioma / switch language"><span id="es">es</span> / <span id="en">en</span></button>
+        <button class="toggle" id="theme" aria-label="Cambiar tema / switch theme" data-i18n="theme">tema</button>
+      </nav>
+      <div class="wrap">
+        <div class="copy">
+          <div class="bars" aria-hidden="true"><span></span><span></span><span></span></div>
+          <div class="index"><small>81</small><h1>Thenz</h1><span class="bar" aria-hidden="true"></span></div>
+          <div class="who"><b>Taddheo de Jesús Carballo Torres</b><br>Full Stack Java Developer</div>
+          <div class="tagline" data-i18n="tagline">Abierto a propuestas — proyectos con clientes y colaboraciones.</div>
+          <div class="cta">
+            <a class="btn primary" href="mailto:torrestaddheo@gmail.com" data-i18n="cta-mail">Escríbeme</a>
+            <a class="btn" href="#work" data-i18n="cta-work">Ver proyectos</a>
+          </div>
+        </div>
+        <div class="art" aria-hidden="true">
+          <canvas id="art"></canvas>
+          <div class="data">lat 24.1426 · lon -110.3128
+java · spring · angular
+build 2026.10 · rev 031
+status: open</div>
+        </div>
+      </div>
+      <div class="ticks" aria-hidden="true"><span>infinity²</span><span>031</span><span>full stack</span></div>
     </header>
 
-    <div class="grid">
-      <aside>
-        <figure class="photo" style="margin:0">
-          <pre class="spider-art" aria-hidden="true"></pre>
-          <figcaption class="cap" data-i18n="fig">Fig. 01 — emblema</figcaption>
-        </figure>
+    <main class="wrap">
+      <section class="block" id="profile">
+        <div class="shead"><span class="no">01</span><h2 data-i18n="h-profile">Perfil</h2></div>
+        <div class="sbody"><p class="about" data-i18n-html="profile"></p></div>
+      </section>
 
-        <dl class="fields">
-          <div class="field"><dt data-i18n="f-name">Nombre</dt><dd>Taddheo de Jesús Carballo Torres</dd></div>
-          <div class="field"><dt data-i18n="f-alias">Alias</dt><dd>Thenz</dd></div>
-          <div class="field"><dt data-i18n="f-role">Ocupación</dt><dd>Full Stack Java Developer</dd></div>
-          <div class="field"><dt data-i18n="f-focus">Especialidad</dt><dd data-i18n="f-focus-val">Backend · seguridad de aplicaciones</dd></div>
-          <div class="field"><dt data-i18n="f-base">Base de operaciones</dt><dd>La Paz, BCS, MX</dd></div>
-          <div class="field"><dt data-i18n="f-langs">Idiomas</dt><dd data-i18n="f-langs-val">Español (nativo) · Inglés (técnico)</dd></div>
-          <div class="field"><dt data-i18n="f-clearance">Nivel de acceso</dt><dd><span class="redact">██████████</span></dd></div>
+      <section class="block">
+        <div class="shead"><span class="no">02</span><h2>Stack</h2></div>
+        <dl class="stack sbody">
+          <div><dt>Backend</dt><dd>Java 17/21 · Spring Boot · JPA/Hibernate · REST</dd></div>
+          <div><dt>Frontend</dt><dd>Angular 17–21 · TypeScript · RxJS</dd></div>
+          <div><dt data-i18n="data">Datos</dt><dd>MySQL 8 · PostgreSQL · Flyway</dd></div>
+          <div><dt data-i18n="realtime">Tiempo real</dt><dd>WebSockets (STOMP)</dd></div>
+          <div><dt data-i18n="security">Seguridad</dt><dd>Spring Security · JWT · OWASP</dd></div>
+          <div><dt data-i18n="payments">Pagos</dt><dd>Stripe API</dd></div>
+          <div><dt>Infra</dt><dd>Docker · Compose · nginx · Railway</dd></div>
+          <div><dt>Testing</dt><dd>JUnit 5 · Mockito · Testcontainers</dd></div>
+          <div><dt data-i18n="tools">Herramientas</dt><dd>Git · Maven · MapStruct · Python</dd></div>
         </dl>
+      </section>
 
-        <div class="status"><span class="stamp" data-i18n="open">Abierto a propuestas</span></div>
-
-        <dl class="fields">
-          <div class="field"><dt data-i18n="f-mail">Correo</dt><dd><a href="mailto:torrestaddheo@gmail.com">torrestaddheo@gmail.com</a></dd></div>
-          <div class="field"><dt>WhatsApp</dt><dd><a href="https://wa.me/526121071523" target="_blank" rel="noopener">612 107 1523</a></dd></div>
-          <div class="field"><dt>LinkedIn</dt><dd><a href="https://linkedin.com/in/taddheo-torres-a5420227b" target="_blank" rel="noopener">taddheo-torres</a></dd></div>
-          <div class="field"><dt>GitHub</dt><dd><a href="https://github.com/taddheotorres" target="_blank" rel="noopener">taddheotorres</a></dd></div>
-          <div class="field"><dt data-i18n="f-docs">Documentos</dt><dd>
-            <a href="CV_TaddheoDev.pdf" target="_blank" rel="noopener" data-i18n="cv-pdf">CV (pdf)</a> ·
-            <a href="cv.html" target="_blank" rel="noopener" data-i18n="cv-web">CV (web)</a></dd></div>
-        </dl>
-      </aside>
-
-      <main>
-        <section class="annex">
-          <h2><span class="tag" data-i18n="annex-a">Anexo A</span><span data-i18n="profile-h">Perfil</span><span class="rule" aria-hidden="true"></span></h2>
-          <p class="lead" data-i18n-html="profile"></p>
-        </section>
-
-        <section class="annex">
-          <h2><span class="tag" data-i18n="annex-b">Anexo B</span><span data-i18n="arsenal-h">Arsenal</span><span class="rule" aria-hidden="true"></span></h2>
-          <table class="arsenal">
-            <tr><th>Backend</th><td>Java 17/21 · Spring Boot · JPA/Hibernate · REST</td></tr>
-            <tr><th>Frontend</th><td>Angular 17–21 · TypeScript · RxJS</td></tr>
-            <tr><th data-i18n="data">Datos</th><td>MySQL 8 · PostgreSQL · Flyway</td></tr>
-            <tr><th data-i18n="realtime">Tiempo real</th><td>WebSockets (STOMP)</td></tr>
-            <tr><th data-i18n="security">Seguridad</th><td>Spring Security · JWT · OWASP</td></tr>
-            <tr><th data-i18n="payments">Pagos</th><td>Stripe API</td></tr>
-            <tr><th>Infra</th><td>Docker · Docker Compose · nginx · Railway</td></tr>
-            <tr><th>Testing</th><td>JUnit 5 · Mockito · Testcontainers</td></tr>
-            <tr><th data-i18n="tools">Herramientas</th><td>Git · JGit · Maven · MapStruct · Python</td></tr>
-          </table>
-        </section>
-
-        <section class="annex">
-          <h2><span class="tag" data-i18n="annex-c">Anexo C</span><span data-i18n="ops-h">Operaciones</span><span class="rule" aria-hidden="true"></span></h2>
-          <article class="case">
-            <div class="head"><span class="no" data-i18n="case-1">Caso 01</span><h3>Livestate</h3><span class="stamp">Demo</span></div>
+      <section class="block" id="work">
+        <div class="shead"><span class="no">03</span><h2 data-i18n="h-work">Proyectos</h2></div>
+        <div class="projects sbody">
+          <article class="project">
+            <div class="ph"><span class="n">/01</span><h3>Livestate</h3><span class="badge">Demo</span></div>
             <p data-i18n="project-livestate"></p>
-            <div class="tech"><b>Stack</b>Java 17 · Spring Boot · Angular · MySQL 8 · Stripe · JWT · WebSockets · Docker</div>
-            <a class="open" href="https://github.com/taddheotorres/livestate" target="_blank" rel="noopener" data-i18n="open-repo">abrir en github</a>
+            <div class="tags"><span>Java 17</span><span>Spring Boot</span><span>Angular</span><span>MySQL 8</span><span>Stripe</span><span>JWT</span><span>WebSockets</span><span>Docker</span></div>
+            <a class="more" href="https://github.com/taddheotorres/livestate" target="_blank" rel="noopener" data-i18n="repo">Ver en GitHub</a>
           </article>
-          <article class="case">
-            <div class="head"><span class="no" data-i18n="case-2">Caso 02</span><h3>PrismGit</h3></div>
+          <article class="project">
+            <div class="ph"><span class="n">/02</span><h3>PrismGit</h3></div>
             <p data-i18n="project-prismgit"></p>
-            <div class="tech"><b>Stack</b>Java 21 · Spring Boot 3.4 · Angular 19 · JGit · Flyway · PostgreSQL · Swagger</div>
-            <a class="open" href="https://github.com/taddheotorres/prismgit" target="_blank" rel="noopener" data-i18n="open-repo">abrir en github</a>
+            <div class="tags"><span>Java 21</span><span>Spring Boot 3.4</span><span>Angular 19</span><span>JGit</span><span>Flyway</span><span>PostgreSQL</span><span>Swagger</span></div>
+            <a class="more" href="https://github.com/taddheotorres/prismgit" target="_blank" rel="noopener" data-i18n="repo">Ver en GitHub</a>
           </article>
-          <article class="case">
-            <div class="head"><span class="no" data-i18n="case-3">Caso 03</span><h3>crystalctl</h3></div>
+          <article class="project">
+            <div class="ph"><span class="n">/03</span><h3>crystalctl</h3></div>
             <p data-i18n="project-crystalctl"></p>
-            <div class="tech"><b>Stack</b>Python · systemd · HTML/CSS · apt / dnf / pacman / zypper</div>
-            <a class="open" href="https://github.com/taddheotorres/crystalctl" target="_blank" rel="noopener" data-i18n="open-repo">abrir en github</a>
+            <div class="tags"><span>Python</span><span>systemd</span><span>HTML/CSS</span><span>apt · dnf · pacman · zypper</span></div>
+            <a class="more" href="https://github.com/taddheotorres/crystalctl" target="_blank" rel="noopener" data-i18n="repo">Ver en GitHub</a>
           </article>
-          <article class="case">
-            <div class="head"><span class="no" data-i18n="case-4">Caso 04</span><h3>No Swipe Overview</h3></div>
+          <article class="project">
+            <div class="ph"><span class="n">/04</span><h3>No Swipe Overview</h3></div>
             <p data-i18n="project-nso"></p>
-            <div class="tech"><b>Stack</b>JavaScript · GJS · GNOME 48–51</div>
-            <a class="open" href="https://github.com/taddheotorres/no-swipe-overview" target="_blank" rel="noopener" data-i18n="open-repo">abrir en github</a>
+            <div class="tags"><span>JavaScript</span><span>GJS</span><span>GNOME 48–51</span></div>
+            <a class="more" href="https://github.com/taddheotorres/no-swipe-overview" target="_blank" rel="noopener" data-i18n="repo">Ver en GitHub</a>
           </article>
-        </section>
+        </div>
+      </section>
 
-        <section class="annex">
-          <h2><span class="tag" data-i18n="annex-d">Anexo D</span><span data-i18n="edu-h">Formación</span><span class="rule" aria-hidden="true"></span></h2>
-          <table class="arsenal">
-            <tr><th data-i18n="edu-key">Carrera</th><td data-i18n="edu-degree">Ingeniería en Desarrollo de Software</td></tr>
-            <tr><th data-i18n="edu-school-key">Institución</th><td data-i18n="edu-school">Universidad Autónoma de Baja California Sur (UABCS)</td></tr>
-            <tr><th data-i18n="edu-when-key">Periodo</th><td data-i18n="edu-date">ago 2024 — en curso</td></tr>
-          </table>
-        </section>
-      </main>
-    </div>
+      <section class="block">
+        <div class="shead"><span class="no">04</span><h2 data-i18n="h-edu">Formación</h2></div>
+        <dl class="rows sbody">
+          <div><dt data-i18n="edu-key">Carrera</dt><dd data-i18n="edu-degree">Ingeniería en Desarrollo de Software</dd></div>
+          <div><dt data-i18n="edu-school-key">Institución</dt><dd data-i18n="edu-school">Universidad Autónoma de Baja California Sur (UABCS)</dd></div>
+          <div><dt data-i18n="edu-when-key">Periodo</dt><dd data-i18n="edu-date">ago 2024 — en curso</dd></div>
+          <div><dt data-i18n="langs">Idiomas</dt><dd data-i18n="langs-val">Español (nativo) · Inglés (técnico)</dd></div>
+        </dl>
+      </section>
 
-    <footer>
-      <span data-i18n="end">Fin del expediente</span><span>·</span><span data-i18n="page">pág. 1 / 1</span>
-      <span class="spacer"></span><span>thenz@eclipse</span>
-    </footer>
+      <section class="block" id="contact">
+        <div class="shead"><span class="no">05</span><h2 data-i18n="h-contact">Contacto</h2></div>
+        <dl class="rows sbody">
+          <div><dt data-i18n="mail">Correo</dt><dd><a href="mailto:torrestaddheo@gmail.com">torrestaddheo@gmail.com</a></dd></div>
+          <div><dt>WhatsApp</dt><dd><a href="https://wa.me/526121071523" target="_blank" rel="noopener">612 107 1523</a></dd></div>
+          <div><dt>LinkedIn</dt><dd><a href="https://linkedin.com/in/taddheo-torres-a5420227b" target="_blank" rel="noopener">taddheo-torres</a></dd></div>
+          <div><dt>GitHub</dt><dd><a href="https://github.com/taddheotorres" target="_blank" rel="noopener">taddheotorres</a></dd></div>
+          <div><dt>CV</dt><dd><a href="CV_TaddheoDev.pdf" target="_blank" rel="noopener" data-i18n="cv-pdf">Descargar PDF</a> · <a href="cv.html" target="_blank" rel="noopener" data-i18n="cv-web">Ver en web</a></dd></div>
+          <div><dt data-i18n="base">Base</dt><dd>La Paz, Baja California Sur, México</dd></div>
+        </dl>
+      </section>
+
+      <footer><span>Thenz <span class="acc">·</span> Taddheo Torres</span><span class="spacer"></span><span>2026</span></footer>
+    </main>
   </div>
 
   <script>
-    const SPIDER = `                        :--=--:.
-                       *%+-:.  .:                   .:==--:.
-                      -%:      ..                 -*%##+----:.::
-                     :%=       =             .-+**=:.        --
-                    :%#       ==        :--*#*+:          .--
-                    =@*      :*.      .*@%+-..          .==.
-                    .*#+.   .*-      :%%=   .         .==:
-                   . .%%....++    ...#%.    .       :==.
-                  .  .-@=..=#-...  .#%.    .      .==.
-              ===.   . #%.:*+    ..+@-     .    :+#***+=--::.
-             .#+%#-  . -@*=+:...  :@+..    :-+*****=:     ..
-              - :+@=. ..%@-:      #%: :-+*%#*=...       ...
-              :.. -**:  +%++= .  :@=.*%%#+.   .      .-:.
-         =-.#%#-:. .*@*=#@@%**#:-%+-%#=:.   ..    .-+=.
-       .#@*@@++#@@%@@@@@@@@@@@%@#*##-.  .  .   :-++-.
-      .%%=+-.:+@@@*=+%@@@@@@@@%#%*:..  .  ::-=++-.
-      +*:-.. :@@%+++#@@@@@@@@@@@@%-....:-++=-:
-    .#*.:   .#@@@@@@@@@@@@@%@@%++##+=-:::.
-   :*#  ....-@@@@@@@@@@@@%#@@@#===*#=. :
-  .#*.     .:%@@@@@@@@@@%%@@@+=-:. +#= .
-  *#..      .+@@@@@@@@@@@@@%+=-    .:*=
-  #-    ... :=#@@@@@@@@@@@#**+=....   --
-  #........:==+*%%%@@@@@%#++=-:::.     :-
- .+      .--:--==++++#@%*+-     .:::.   .:
- .:    :-:    ......+*#*+.          ......
- :  .:-.        .  -%=++.
- :..:            ..#:-=.
-  .              .+::-
-                 -:::
-                ::-.
-               .-:
-               :`;
-
     const i18n = {
-      'file-no': { es: 'Expediente n.º TT-0612', en: 'Case file no. TT-0612' },
-      class: { es: 'Clasificación', en: 'Classification' },
-      'class-val': { es: 'pública', en: 'public' },
-      updated: { es: 'Actualizado', en: 'Updated' },
-      mode: { es: 'modo', en: 'mode' },
-      subject: { es: 'Sujeto', en: 'Subject' },
-      confidential: { es: 'Confidencial', en: 'Confidential' },
-      fig: { es: 'Fig. 01 — emblema', en: 'Fig. 01 — emblem' },
-      'f-name': { es: 'Nombre', en: 'Name' },
-      'f-alias': { es: 'Alias', en: 'Alias' },
-      'f-role': { es: 'Ocupación', en: 'Occupation' },
-      'f-focus': { es: 'Especialidad', en: 'Focus' },
-      'f-focus-val': { es: 'Backend · seguridad de aplicaciones', en: 'Backend · application security' },
-      'f-base': { es: 'Base de operaciones', en: 'Base of operations' },
-      'f-langs': { es: 'Idiomas', en: 'Languages' },
-      'f-langs-val': { es: 'Español (nativo) · Inglés (técnico)', en: 'Spanish (native) · English (technical)' },
-      'f-clearance': { es: 'Nivel de acceso', en: 'Clearance' },
-      open: { es: 'Abierto a propuestas', en: 'Open to proposals' },
-      'f-mail': { es: 'Correo', en: 'Email' },
-      'f-docs': { es: 'Documentos', en: 'Documents' },
-      'cv-pdf': { es: 'CV (pdf)', en: 'CV (pdf)' },
-      'cv-web': { es: 'CV (web)', en: 'CV (web)' },
-      'annex-a': { es: 'Anexo A', en: 'Annex A' },
-      'annex-b': { es: 'Anexo B', en: 'Annex B' },
-      'annex-c': { es: 'Anexo C', en: 'Annex C' },
-      'annex-d': { es: 'Anexo D', en: 'Annex D' },
-      'profile-h': { es: 'Perfil', en: 'Profile' },
-      'arsenal-h': { es: 'Arsenal', en: 'Arsenal' },
-      'ops-h': { es: 'Operaciones', en: 'Operations' },
-      'edu-h': { es: 'Formación', en: 'Education' },
+      theme: { es: 'tema', en: 'theme' },
+      tagline: { es: 'Abierto a propuestas — proyectos con clientes y colaboraciones.', en: 'Open to proposals — client projects and collaborations.' },
+      'cta-mail': { es: 'Escríbeme', en: 'Get in touch' },
+      'cta-work': { es: 'Ver proyectos', en: 'See projects' },
+      'h-profile': { es: 'Perfil', en: 'Profile' },
+      'h-work': { es: 'Proyectos', en: 'Projects' },
+      'h-edu': { es: 'Formación', en: 'Education' },
+      'h-contact': { es: 'Contacto', en: 'Contact' },
       data: { es: 'Datos', en: 'Data' },
       realtime: { es: 'Tiempo real', en: 'Real time' },
       security: { es: 'Seguridad', en: 'Security' },
       payments: { es: 'Pagos', en: 'Payments' },
       tools: { es: 'Herramientas', en: 'Tools' },
-      'case-1': { es: 'Caso 01', en: 'Case 01' },
-      'case-2': { es: 'Caso 02', en: 'Case 02' },
-      'case-3': { es: 'Caso 03', en: 'Case 03' },
-      'case-4': { es: 'Caso 04', en: 'Case 04' },
-      'open-repo': { es: 'abrir en github', en: 'open on github' },
+      repo: { es: 'Ver en GitHub', en: 'View on GitHub' },
+      mail: { es: 'Correo', en: 'Email' },
+      base: { es: 'Base', en: 'Based in' },
+      langs: { es: 'Idiomas', en: 'Languages' },
+      'langs-val': { es: 'Español (nativo) · Inglés (técnico)', en: 'Spanish (native) · English (technical)' },
+      'cv-pdf': { es: 'Descargar PDF', en: 'Download PDF' },
+      'cv-web': { es: 'Ver en web', en: 'View online' },
+      'gate-hint': { es: 'elige una opción', en: 'pick one' },
       profile: {
         es: 'Desarrollador <strong>full stack</strong> enfocado en <strong>Java / Spring Boot</strong> y <strong>Angular</strong>. Diseño y construyo aplicaciones web completas: APIs REST, pagos con Stripe, mensajería en tiempo real con WebSockets, contenedores con Docker y bases de datos relacionales, cuidando la seguridad desde el diseño. Estudio Ingeniería en Desarrollo de Software en la UABCS. <span class="hl">Abierto a propuestas</span>: proyectos con clientes y colaboraciones.',
         en: '<strong>Full stack</strong> developer focused on <strong>Java / Spring Boot</strong> and <strong>Angular</strong>. I design and build complete web applications: REST APIs, Stripe payments, real-time messaging over WebSockets, Docker containers and relational databases, with security considered from the start. Studying Software Engineering at UABCS. <span class="hl">Open to proposals</span>: client projects and collaborations.'
@@ -407,14 +338,7 @@
       'edu-when-key': { es: 'Periodo', en: 'Period' },
       'edu-degree': { es: 'Ingeniería en Desarrollo de Software', en: 'Software Engineering' },
       'edu-school': { es: 'Universidad Autónoma de Baja California Sur (UABCS)', en: 'Autonomous University of Baja California Sur (UABCS)' },
-      'edu-date': { es: 'ago 2024 — en curso', en: 'Aug 2024 — ongoing' },
-      end: { es: 'Fin del expediente', en: 'End of file' },
-      page: { es: 'pág. 1 / 1', en: 'page 1 / 1' },
-      'gate-open': { es: 'abrir expediente', en: 'open case file' },
-      boot: {
-        es: '> conectando con el archivo... ok\n> verificando sujeto: THENZ... ok\n> selecciona una opción_',
-        en: '> connecting to archive... ok\n> verifying subject: THENZ... ok\n> pick an option_'
-      }
+      'edu-date': { es: 'ago 2024 — en curso', en: 'Aug 2024 — ongoing' }
     };
 
     const root = document.documentElement;
@@ -422,7 +346,6 @@
       get(k) { try { return localStorage.getItem(k); } catch (_) { return null; } },
       set(k, v) { try { localStorage.setItem(k, v); } catch (_) {} }
     };
-    const reduced = matchMedia('(prefers-reduced-motion: reduce)');
 
     let lang = store.get('portfolio-lang') || ((navigator.language || 'es').startsWith('en') ? 'en' : 'es');
     function applyLang(next) {
@@ -433,40 +356,96 @@
       document.getElementById('es').className = lang === 'es' ? 'on' : '';
       document.getElementById('en').className = lang === 'en' ? 'on' : '';
       root.lang = lang;
-      showMode();
-      typeBoot();
     }
     document.getElementById('lang').onclick = () => applyLang(lang === 'es' ? 'en' : 'es');
 
-    /* dark = the file on a CRT, light = the file printed on paper */
     const isLight = () => root.dataset.theme ? root.dataset.theme === 'light' : matchMedia('(prefers-color-scheme: light)').matches;
-    function showMode() {
-      document.getElementById('modeName').textContent = isLight() ? (lang === 'es' ? 'papel' : 'paper') : 'crt';
-    }
     const savedTheme = store.get('portfolio-theme');
     if (savedTheme) root.dataset.theme = savedTheme;
     document.getElementById('theme').onclick = () => {
       root.dataset.theme = isLight() ? 'dark' : 'light';
       store.set('portfolio-theme', root.dataset.theme);
-      showMode();
+      drawArt();
     };
 
-    /* the ASCII spider, coloured by character density */
-    const tier = (c) => ' .:-'.includes(c) ? 0 : '=+*'.includes(c) ? 1 : '#%'.includes(c) ? 2 : 3;
-    const spiderHTML = SPIDER.split('\n').map((line) =>
-      line.replace(/[ .:-]+|[=+*]+|[#%]+|@+/g, (run) => `<span class="t${tier(run[0])}">${run}</span>`)).join('\n');
-    document.querySelectorAll('.spider-art').forEach((el) => (el.innerHTML = spiderHTML));
+    /* Artwork: a glowing infinity ribbon, an orbit and two four-point sparkles, rendered at low resolution and
+       ordered-dithered (Bayer 8x8) into small square dots, for the halftone look of a printed scan.
+       Drawn once per size or theme change; it never animates. */
+    const BAYER = (() => {
+      const m = [[0]];
+      let b = m;
+      for (let n = 1; n < 8; n *= 2) {
+        const s = b.length, next = Array.from({ length: s * 2 }, () => new Array(s * 2));
+        for (let y = 0; y < s; y++) for (let x = 0; x < s; x++) {
+          const v = b[y][x] * 4;
+          next[y][x] = v; next[y][x + s] = v + 2; next[y + s][x] = v + 3; next[y + s][x + s] = v + 1;
+        }
+        b = next;
+      }
+      return b.map((row) => row.map((v) => (v + 0.5) / 64));
+    })();
 
-    /* boot lines typed into the start screen */
-    let bootTimer = null;
-    function typeBoot() {
-      const el = document.getElementById('boot'), text = i18n.boot[lang];
-      clearInterval(bootTimer);
-      if (reduced.matches) { el.textContent = text; return; }
-      let i = 0;
-      el.textContent = '';
-      bootTimer = setInterval(() => { el.textContent = text.slice(0, ++i); if (i >= text.length) clearInterval(bootTimer); }, 22);
+    function drawArt() {
+      const canvas = document.getElementById('art'), r = canvas.getBoundingClientRect();
+      if (!r.width) return;
+      const dpr = window.devicePixelRatio || 1, cell = 4;
+      canvas.width = r.width * dpr; canvas.height = r.height * dpr;
+      const ctx = canvas.getContext('2d');
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      ctx.clearRect(0, 0, r.width, r.height);
+      const W = Math.ceil(r.width / cell), H = Math.ceil(r.height / cell);
+      const field = new Float32Array(W * H);
+      const S = Math.min(W, H);
+      const cx = W * 0.52, cy = H * 0.5;
+
+      // infinity ribbon: a tilted lemniscate whose thickness swells and thins along the curve
+      const rib = [];
+      for (let i = 0; i < 520; i++) {
+        const t = (i / 520) * Math.PI * 2, d = 1 + Math.sin(t) ** 2;
+        let x = (Math.cos(t) / d) * S * 0.46, y = (Math.sin(t) * Math.cos(t) / d) * S * 0.5;
+        const a = -0.42, xr = x * Math.cos(a) - y * Math.sin(a), yr = x * Math.sin(a) + y * Math.cos(a);
+        rib.push([cx + xr, cy + yr, 2.2 + 3.4 * Math.abs(Math.sin(t * 1.5))]);
+      }
+      // orbit: a thin ellipse around it
+      for (let i = 0; i < 380; i++) {
+        const t = (i / 380) * Math.PI * 2, a = 0.35;
+        const x = Math.cos(t) * S * 0.48, y = Math.sin(t) * S * 0.17;
+        rib.push([cx + x * Math.cos(a) - y * Math.sin(a), cy + x * Math.sin(a) + y * Math.cos(a), 0.9]);
+      }
+      for (const [px, py, w] of rib) {
+        const R = Math.ceil(w * 3.2);
+        for (let y = Math.max(0, Math.floor(py - R)); y < Math.min(H, py + R); y++)
+          for (let x = Math.max(0, Math.floor(px - R)); x < Math.min(W, px + R); x++) {
+            const d2 = (x - px) ** 2 + (y - py) ** 2;
+            field[y * W + x] = Math.max(field[y * W + x], Math.exp(-d2 / (2 * w * w)));
+          }
+      }
+      // sparkles: four-point stars with a soft halo
+      const star = (sx, sy, size) => {
+        const R = Math.ceil(size * 2.2);
+        for (let y = Math.max(0, Math.floor(sy - R)); y < Math.min(H, sy + R); y++)
+          for (let x = Math.max(0, Math.floor(sx - R)); x < Math.min(W, sx + R); x++) {
+            const dx = Math.abs(x - sx) / size, dy = Math.abs(y - sy) / size;
+            const body = Math.max(0, 1 - (Math.sqrt(dx) + Math.sqrt(dy)) / 1.15);
+            const halo = 0.35 * Math.exp(-(dx * dx + dy * dy) * 1.4);
+            field[y * W + x] = Math.max(field[y * W + x], Math.min(1, body * 1.6 + halo));
+          }
+      };
+      star(cx - S * 0.27, cy - S * 0.24, S * 0.07);
+      star(cx + S * 0.33, cy + S * 0.21, S * 0.045);
+
+      const light = isLight();
+      const tones = light ? ['#9fb8b9', '#2e8f93', '#14585c'] : ['#1f5f6e', '#5cc4c6', '#dff6fb'];
+      for (let y = 0; y < H; y++)
+        for (let x = 0; x < W; x++) {
+          const v = field[y * W + x];
+          if (v < 0.04 || v < BAYER[y & 7][x & 7] * 0.95) continue;
+          ctx.fillStyle = tones[v > 0.72 ? 2 : v > 0.38 ? 1 : 0];
+          ctx.fillRect(x * cell, y * cell, cell - 1, cell - 1);
+        }
     }
+    let resizeTimer;
+    addEventListener('resize', () => { clearTimeout(resizeTimer); resizeTimer = setTimeout(drawArt, 120); });
 
     /* start screen: shown once per visit unless the link already points into the portfolio */
     const gate = document.getElementById('gate'), site = document.getElementById('site');
@@ -476,6 +455,7 @@
       site.inert = false;
       try { sessionStorage.setItem('entered', '1'); } catch (_) {}
       if (location.hash !== '#portfolio') history.replaceState(null, '', '#portfolio');
+      requestAnimationFrame(drawArt);
     }
     let entered = false;
     try { entered = sessionStorage.getItem('entered') === '1'; } catch (_) {}
@@ -493,27 +473,8 @@
       if (e.key === '2') location.href = 'https://github.com/taddheotorres';
     });
 
-    /* CRT static: a tiny random image scaled up, redrawn about 12 times a second */
-    (function noise() {
-      const c = document.getElementById('noise'), ctx = c.getContext('2d');
-      c.width = 160; c.height = 100;
-      const img = ctx.createImageData(c.width, c.height);
-      let last = 0;
-      function frame(now) {
-        if (!document.hidden && !isLight() && now - last > 80) {
-          last = now;
-          for (let i = 0; i < img.data.length; i += 4) {
-            const v = Math.random() * 255;
-            img.data[i] = v; img.data[i + 1] = v * 0.35; img.data[i + 2] = v * 0.35; img.data[i + 3] = 255;
-          }
-          ctx.putImageData(img, 0, 0);
-        }
-        if (!reduced.matches) requestAnimationFrame(frame);
-      }
-      requestAnimationFrame(frame);
-    })();
-
     applyLang(lang);
+    drawArt();
   </script>
 </body>
 </html>
