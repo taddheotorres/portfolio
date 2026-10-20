@@ -5,391 +5,309 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>taddheo</title>
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2032%2032%22%3E%3Crect%20width%3D%2232%22%20height%3D%2232%22%20rx%3D%227%22%20fill%3D%22%230b0405%22/%3E%3Ctext%20x%3D%2216%22%20y%3D%2221.5%22%20text-anchor%3D%22middle%22%20font-family%3D%22ui-monospace%2CMenlo%2CConsolas%2Cmonospace%22%20font-size%3D%2215%22%20font-weight%3D%22700%22%20fill%3D%22%23ff2a2a%22%3Eta%3C/text%3E%3C/svg%3E">
-  <meta name="description" content="Taddheo Torres · Full Stack Java Developer · Spring Boot, Angular, Docker">
+  <meta name="description" content="Thenz · Taddheo Torres · Full Stack Java Developer · Spring Boot, Angular, Docker">
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=VT323&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
   <style>
-    /* Terminal look shared with github.com/taddheotorres and crystalctl: monospace, ASCII, black and red. */
+    /* A case file on a CRT. Dark: the file shown on a monitor (scanlines, glow, static).
+       Light: the same file printed on manila paper, with ink and red stamps and no screen effects. */
     :root {
-      --bg: #050203; --panel: rgba(8, 3, 4, .84); --ink: #ece4e4; --muted: #8c7577; --faint: #4a3436;
-      --rule: #2a1416; --rule-strong: #4a1c20; --red: #ff2a2a; --red-mid: #c0121a; --red-deep: #7a0a0e;
-      --field: 255, 42, 42; --field-alpha: .3;
-      --mono: "JetBrains Mono", ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+      --bg: #050101; --screen: #0b0304; --ink: #f0dede; --muted: #a07c7f; --faint: #5a3a3d; --line: #3a1518;
+      --red: #ff2a2a; --red-soft: #c0121a; --stamp: #ff3030; --glow: 0 0 6px rgba(255, 42, 42, .45);
+      --ink-glow: 0 0 4px rgba(255, 210, 210, .18); --redact: #d9c4c4;
+      --display: "VT323", ui-monospace, monospace;
+      --mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
       color-scheme: dark;
     }
     :root[data-theme="light"] {
-      --bg: #f1ece6; --panel: rgba(250, 247, 243, .88); --ink: #140607; --muted: #7a6062; --faint: #c3b3b0;
-      --rule: #ddd1cc; --rule-strong: #c9b6b1; --red: #d10f1a; --red-mid: #b10d16; --red-deep: #e8a2a5;
-      --field: 140, 10, 16; --field-alpha: .2;
+      --bg: #d9cfb8; --screen: #efe6d2; --ink: #1d1512; --muted: #6b5a4c; --faint: #a8977f; --line: #c4b597;
+      --red: #b3121a; --red-soft: #8f0f15; --stamp: #c4141d; --glow: none; --ink-glow: none; --redact: #1d1512;
       color-scheme: light;
     }
     @media (prefers-color-scheme: light) {
       :root:not([data-theme="dark"]) {
-        --bg: #f1ece6; --panel: rgba(250, 247, 243, .88); --ink: #140607; --muted: #7a6062; --faint: #c3b3b0;
-        --rule: #ddd1cc; --rule-strong: #c9b6b1; --red: #d10f1a; --red-mid: #b10d16; --red-deep: #e8a2a5;
-        --field: 140, 10, 16; --field-alpha: .2;
+        --bg: #d9cfb8; --screen: #efe6d2; --ink: #1d1512; --muted: #6b5a4c; --faint: #a8977f; --line: #c4b597;
+        --red: #b3121a; --red-soft: #8f0f15; --stamp: #c4141d; --glow: none; --ink-glow: none; --redact: #1d1512;
         color-scheme: light;
       }
     }
     * { box-sizing: border-box; }
     html, body { margin: 0; }
-    body { min-height: 100vh; background: var(--bg); color: var(--ink); font: 13.5px/1.65 var(--mono); }
+    body { min-height: 100vh; background: var(--bg); color: var(--ink); font: 14px/1.6 var(--mono); padding: 22px 14px; }
     a { color: inherit; }
-    #field { position: fixed; inset: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none; }
-    .wrap { position: relative; z-index: 1; max-width: 1080px; margin: 0 auto; padding: 28px 18px 48px; }
-
-    pre.art { margin: 0; font: 700 9px/1 var(--mono); white-space: pre; letter-spacing: 0; }
+    .red { color: var(--red); text-shadow: var(--glow); }
     .muted { color: var(--muted); }
-    .red { color: var(--red); }
 
-    /* top bar */
-    .bar { display: flex; align-items: center; gap: 4px; flex-wrap: wrap; padding: 8px 0;
-      border-top: 1px dashed var(--rule-strong); border-bottom: 1px dashed var(--rule-strong); margin: 18px 0 26px; }
+    /* the monitor */
+    .screen { position: relative; max-width: 1100px; margin: 0 auto; background: var(--screen); border-radius: 22px;
+      padding: 30px 34px 36px; text-shadow: var(--ink-glow); overflow: hidden;
+      box-shadow: inset 0 0 120px rgba(0, 0, 0, .85), inset 0 0 18px rgba(255, 42, 42, .08), 0 0 0 10px #120607, 0 0 0 11px #2a1012, 0 30px 80px rgba(0, 0, 0, .7); }
+    :root[data-theme="light"] .screen { border-radius: 4px; box-shadow: 0 1px 0 #fff8 inset, 0 18px 40px rgba(60, 40, 20, .35); }
+    @media (prefers-color-scheme: light) { :root:not([data-theme="dark"]) .screen { border-radius: 4px; box-shadow: 0 18px 40px rgba(60, 40, 20, .35); } }
+    .fx { position: fixed; inset: 0; pointer-events: none; z-index: 20; }
+    .scan { background: repeating-linear-gradient(0deg, rgba(0, 0, 0, .28) 0 1px, transparent 1px 3px); }
+    .vignette { background: radial-gradient(ellipse at center, transparent 55%, rgba(0, 0, 0, .55) 100%); }
+    .roll { background: linear-gradient(180deg, transparent, rgba(255, 60, 60, .06) 50%, transparent); height: 22vh; top: -22vh; bottom: auto;
+      animation: roll 7s linear infinite; }
+    @keyframes roll { to { transform: translateY(130vh); } }
+    #noise { position: fixed; inset: 0; width: 100%; height: 100%; pointer-events: none; z-index: 19; opacity: .07; image-rendering: pixelated; }
+    .flicker { animation: flicker 5s infinite; }
+    @keyframes flicker { 0%, 100% { opacity: 1; } 41% { opacity: 1; } 42% { opacity: .9; } 43% { opacity: 1; } 77% { opacity: .95; } 78% { opacity: 1; } }
+    :root[data-theme="light"] .fx, :root[data-theme="light"] #noise { display: none; }
+    @media (prefers-color-scheme: light) { :root:not([data-theme="dark"]) .fx, :root:not([data-theme="dark"]) #noise { display: none; } }
+    @media (prefers-reduced-motion: reduce) { .roll, .flicker { animation: none; } .roll { display: none; } }
+
+    /* file header */
+    .strip { display: flex; flex-wrap: wrap; gap: 6px 18px; align-items: center; font-size: 12px; letter-spacing: .08em; text-transform: uppercase;
+      color: var(--muted); padding-bottom: 10px; border-bottom: 2px solid var(--line); }
+    .strip b { color: var(--ink); font-weight: 600; }
     .spacer { flex: 1; }
-    .prompt b { font-weight: 500; }
-    .cursor { display: inline-block; width: .6em; height: 1.1em; vertical-align: -2px; background: var(--red); animation: blink 1.1s steps(1) infinite; }
-    @keyframes blink { 50% { opacity: 0; } }
-    .brand pre { color: var(--red); text-shadow: 0 0 14px rgba(255, 42, 42, .22); }
-    .brand .sub { margin-top: 12px; color: var(--muted); }
-    .brand .sub b { color: var(--ink); font-weight: 500; }
+    .switch { font: 600 12px var(--mono); letter-spacing: .08em; text-transform: uppercase; background: transparent; border: 1px solid var(--line);
+      color: var(--muted); padding: 4px 8px; cursor: pointer; }
+    .switch .on { color: var(--red); text-shadow: var(--glow); }
+    .switch:hover { border-color: var(--red); color: var(--ink); }
+    button:focus-visible, a:focus-visible { outline: 2px solid var(--red); outline-offset: 2px; }
 
-    button, a.btn { font: 500 12.5px/1 var(--mono); color: var(--ink); background: transparent; border: 0;
-      padding: 7px 6px; cursor: pointer; text-decoration: none; white-space: nowrap; display: inline-block; }
-    button::before, a.btn::before { content: "[ "; color: var(--muted); }
-    button::after, a.btn::after { content: " ]"; color: var(--muted); }
-    button:hover, a.btn:hover { background: var(--ink); color: var(--bg); }
-    button:hover::before, button:hover::after, a.btn:hover::before, a.btn:hover::after { color: var(--bg); }
-    a.btn.go { color: var(--red); }
-    a.btn.go:hover { background: var(--red); color: #fff; }
-    button:focus-visible, a:focus-visible { outline: 1px solid var(--red); outline-offset: 2px; }
-    .on { color: var(--red); }
+    .title { position: relative; margin: 26px 0 8px; }
+    .title .kicker { font: 18px/1 var(--display); letter-spacing: .2em; color: var(--muted); text-transform: uppercase; }
+    .title h1 { margin: 6px 0 0; font: 400 clamp(64px, 11vw, 128px)/.85 var(--display); color: var(--red); text-shadow: var(--glow); letter-spacing: .02em; }
+    .title .sub { margin-top: 10px; color: var(--muted); }
+    .title .sub b { color: var(--ink); font-weight: 500; }
+    .stamp { display: inline-block; font: 400 26px/1 var(--display); letter-spacing: .12em; text-transform: uppercase; color: var(--stamp);
+      border: 3px double var(--stamp); padding: 4px 12px 2px; transform: rotate(-7deg); opacity: .88; text-shadow: var(--glow);
+      -webkit-mask-image: repeating-linear-gradient(45deg, #000 0 3px, rgba(0, 0, 0, .78) 3px 5px); mask-image: repeating-linear-gradient(45deg, #000 0 3px, rgba(0, 0, 0, .78) 3px 5px); }
+    .title .stamp { position: absolute; right: 2%; top: 18px; font-size: 34px; }
 
-    .grid { display: grid; grid-template-columns: 340px minmax(0, 1fr); gap: 26px; align-items: start; }
-    .grid > * { min-width: 0; }  /* long dot leaders must not widen the columns */
-    .box { position: relative; border: 1px solid var(--rule-strong); background: var(--panel); padding: 18px 14px 12px; }
-    .box + .box { margin-top: 22px; }
-    .box > .title { position: absolute; top: -9px; left: 10px; padding: 0 6px; background: var(--bg); line-height: 16px; }
-    .box > .title b { color: var(--red); }
-    .box > .tag { position: absolute; top: -9px; right: 10px; padding: 0 6px; background: var(--bg); line-height: 16px; color: var(--red); font-weight: 700; }
+    .grid { display: grid; grid-template-columns: 330px minmax(0, 1fr); gap: 34px; margin-top: 26px; align-items: start; }
+    .grid > * { min-width: 0; }
 
-    .spider { display: flex; justify-content: center; padding: 6px 0 2px; overflow: hidden; }
-    .spider pre { font-size: 6.4px; line-height: 7.2px; font-weight: 700; }
-    .t0 { color: var(--red-deep); } .t1 { color: var(--red-mid); } .t2 { color: var(--red); } .t3 { color: #ff8a8a; }
-    :root[data-theme="light"] .t3 { color: #6a0a10; }
+    /* left: the subject card */
+    .photo { position: relative; border: 1px solid var(--line); padding: 14px 10px 30px; display: grid; place-items: center; overflow: hidden; }
+    .photo::before, .photo::after { content: ""; position: absolute; width: 16px; height: 16px; border: 2px solid var(--red); }
+    .photo::before { top: 6px; left: 6px; border-right: 0; border-bottom: 0; }
+    .photo::after { bottom: 6px; right: 6px; border-left: 0; border-top: 0; }
+    .photo .cap { position: absolute; bottom: 8px; left: 12px; font-size: 11px; color: var(--muted); letter-spacing: .1em; text-transform: uppercase; }
+    .spider-art { margin: 0; font: 700 6.2px/7px var(--mono); white-space: pre; text-shadow: none; }
+    .t0 { color: #6e0a0e; } .t1 { color: var(--red-soft); } .t2 { color: var(--red); } .t3 { color: #ff9a9a; }
+    :root[data-theme="light"] .t0 { color: #c9a08e; } :root[data-theme="light"] .t3 { color: #4a0508; }
 
-    /* key ........ value rows */
-    .kv { display: grid; grid-template-columns: max-content minmax(12px, 1fr) auto; gap: 3px 0; align-items: baseline; }
-    .kv dt { color: var(--red); font-weight: 700; }
-    .kv .lead { overflow: hidden; white-space: nowrap; color: var(--faint); margin: 0 6px; min-width: 0; }
-    .kv .lead::before { content: ": ...................................................................................................."; }
-    .kv dd { margin: 0; text-align: right; }
-    .kv dd a { text-decoration: none; }
-    .kv dd a:hover { color: var(--red); text-decoration: underline; }
+    .fields { margin: 18px 0 0; display: grid; gap: 10px; }
+    .field dt { font-size: 10.5px; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); }
+    .field dd { margin: 2px 0 0; padding-bottom: 4px; border-bottom: 1px dotted var(--faint); }
+    .field dd a { text-decoration: none; }
+    .field dd a:hover { color: var(--red); text-decoration: underline; }
+    .status { margin: 22px 0 6px; text-align: center; }
+    .status .stamp { font-size: 22px; }
+    .redact { background: var(--redact); color: transparent; border-radius: 1px; user-select: none; text-shadow: none; }
 
-    section { margin-top: 0; }
-    section + section { margin-top: 30px; }
-    .head { display: flex; gap: 10px; align-items: baseline; margin-bottom: 12px; }
-    .head b { color: var(--red); }
-    .head .rule { flex: 1; min-width: 0; overflow: hidden; white-space: nowrap; color: var(--rule-strong); }
-    .about { margin: 0; color: var(--muted); }
-    .about strong { color: var(--ink); font-weight: 500; }
-    .about .hl { color: var(--red); font-weight: 700; }
-    .about code { color: var(--ink); }
-    .about code::before, .about code::after { content: "`"; color: var(--faint); }
+    /* right: the annexes */
+    .annex + .annex { margin-top: 34px; }
+    .annex h2 { margin: 0 0 12px; display: flex; gap: 12px; align-items: baseline; font: 400 28px/1 var(--display); letter-spacing: .06em; text-transform: uppercase; }
+    .annex h2 .tag { color: var(--red); text-shadow: var(--glow); }
+    .annex h2 .rule { flex: 1; height: 2px; background: var(--line); align-self: center; }
+    .annex p { margin: 0; }
+    .lead { font-size: 15px; }
+    .lead strong { font-weight: 600; }
+    .lead .hl { color: var(--red); text-shadow: var(--glow); font-weight: 600; }
 
-    .stack .kv dd { text-align: right; }
+    table.arsenal { width: 100%; border-collapse: collapse; }
+    .arsenal th, .arsenal td { text-align: left; vertical-align: top; padding: 7px 10px 7px 0; border-bottom: 1px dotted var(--faint); }
+    .arsenal th { width: 120px; font-weight: 500; font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); }
 
-    .projects { display: grid; gap: 22px; }
-    .project p { margin: 4px 0 10px; color: var(--muted); }
-    .project .tech { color: var(--ink); }
-    .project .tech span { color: var(--faint); }
-    .project .links { margin: 6px -6px 0; border-top: 1px dashed var(--rule); padding-top: 6px; }
+    .case { position: relative; padding: 14px 0 16px; border-bottom: 1px solid var(--line); }
+    .case:first-of-type { border-top: 1px solid var(--line); }
+    .case .head { display: flex; gap: 12px; align-items: baseline; flex-wrap: wrap; }
+    .case .no { font: 400 20px/1 var(--display); color: var(--muted); letter-spacing: .08em; }
+    .case h3 { margin: 0; font: 400 30px/1 var(--display); letter-spacing: .05em; text-transform: uppercase; color: var(--ink); }
+    .case .stamp { font-size: 18px; margin-left: 4px; }
+    .case p { margin: 8px 0; color: var(--muted); }
+    .case .tech { font-size: 12.5px; }
+    .case .tech b { font-weight: 500; color: var(--muted); letter-spacing: .1em; font-size: 11px; text-transform: uppercase; margin-right: 6px; }
+    .open { display: inline-block; margin-top: 8px; font: 600 12px var(--mono); letter-spacing: .12em; text-transform: uppercase; text-decoration: none;
+      color: var(--red); text-shadow: var(--glow); border-bottom: 1px solid currentColor; }
+    .open::before { content: "► "; }
+    .open:hover { background: var(--red); color: var(--screen); text-shadow: none; }
 
-    footer { margin-top: 34px; padding-top: 10px; border-top: 1px dashed var(--rule-strong); color: var(--muted); }
+    footer { margin-top: 36px; padding-top: 12px; border-top: 2px solid var(--line); display: flex; flex-wrap: wrap; gap: 8px 18px;
+      font-size: 11px; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); }
 
-
-    /* the spider drawing, with scanlines and a soft flicker on top */
-    .holo-wrap { position: relative; }
-    .holo-wrap { display: flex; align-items: center; justify-content: center; overflow: hidden; }
-    .spider-art { margin: 0; font: 700 6.4px/7.2px var(--mono); white-space: pre; animation: flicker 4s infinite; }
-    @keyframes flicker { 0%, 100% { opacity: 1; } 47% { opacity: 1; } 48% { opacity: .82; } 49% { opacity: 1; } 73% { opacity: .9; } 74% { opacity: 1; } }
-    @media (prefers-reduced-motion: reduce) { .spider-art { animation: none; } }
-    .holo-wrap::after { content: ""; position: absolute; inset: 0; pointer-events: none;
-      background: repeating-linear-gradient(0deg, rgba(255, 42, 42, .07) 0 1px, transparent 1px 3px); }
-    .spider.holo-wrap { height: 260px; padding: 0; }
-
-    /* start screen: a small "window" with two ways in */
+    /* start screen: the same window as before, now as a terminal on the monitor */
     body.gated { overflow: hidden; }
-    body.gated #site { visibility: hidden; }  /* only the ASCII field shows behind the window */
-    .gate { position: fixed; inset: 0; z-index: 10; display: grid; place-items: center; padding: 18px;
-      background: radial-gradient(ellipse at center, rgba(0, 0, 0, .25), rgba(0, 0, 0, .7)); transition: opacity .35s, visibility .35s; }
-    :root[data-theme="light"] .gate { background: radial-gradient(ellipse at center, rgba(241, 236, 230, .2), rgba(241, 236, 230, .75)); }
+    body.gated .screen { visibility: hidden; }
+    .gate { position: fixed; inset: 0; z-index: 15; display: grid; place-items: center; padding: 16px; transition: opacity .35s, visibility .35s; }
     .gate.gone { opacity: 0; visibility: hidden; }
-    .win { width: min(420px, 100%); border: 1px solid var(--rule-strong); background: var(--panel); backdrop-filter: blur(3px);
-      box-shadow: 0 0 0 1px rgba(255, 42, 42, .06), 0 30px 80px rgba(0, 0, 0, .55); }
-    .win .titlebar { display: flex; align-items: center; gap: 8px; padding: 7px 10px; border-bottom: 1px solid var(--rule-strong); color: var(--muted); font-size: 12px; }
-    .win .titlebar .ctl { color: var(--faint); letter-spacing: 2px; }
-    .win .body { padding: 6px 20px 16px; }
-    .win .holo-wrap { height: 250px; margin: 0 -8px; }
-    .win .name { text-align: center; color: var(--red); font-size: 22px; font-weight: 700; letter-spacing: .02em; margin-top: 2px; }
-    .win .role { text-align: center; color: var(--muted); font-size: 12px; padding: 8px 0 14px; border-top: 1px solid var(--rule); margin-top: 8px; }
-    .win .label { color: var(--muted); font-size: 11px; letter-spacing: .12em; margin: 2px 0 8px; }
-    .win .label b { color: var(--red); }
-    .way { display: flex; align-items: center; gap: 12px; padding: 10px 12px; border: 1px solid var(--rule-strong); text-decoration: none;
-      color: var(--ink); background: transparent; transition: border-color .15s, background .15s; }
+    .win { width: min(420px, 100%); background: var(--screen); border: 1px solid var(--line); text-shadow: var(--ink-glow);
+      box-shadow: inset 0 0 70px rgba(0, 0, 0, .75), 0 0 0 8px #120607, 0 0 0 9px #2a1012, 0 30px 80px rgba(0, 0, 0, .7); border-radius: 14px; overflow: hidden; }
+    :root[data-theme="light"] .win { border-radius: 4px; box-shadow: 0 18px 40px rgba(60, 40, 20, .35); }
+    .win .bar { display: flex; gap: 8px; padding: 8px 12px; border-bottom: 1px solid var(--line); font-size: 12px; color: var(--muted); letter-spacing: .08em; text-transform: uppercase; }
+    .win .body { padding: 12px 20px 16px; }
+    .win .photo { border: 0; padding: 4px 0 10px; }
+    .win .photo::before, .win .photo::after { display: none; }
+    .win .name { text-align: center; font: 400 44px/1 var(--display); color: var(--red); text-shadow: var(--glow); letter-spacing: .06em; }
+    .win .role { text-align: center; color: var(--muted); font-size: 12px; padding: 6px 0 12px; border-bottom: 1px solid var(--line); }
+    .win .boot { margin: 12px 0 10px; font-size: 12px; color: var(--muted); min-height: 3.4em; white-space: pre-line; }
+    .way { display: flex; align-items: center; gap: 12px; padding: 10px 12px; border: 1px solid var(--line); text-decoration: none; }
     .way + .way { margin-top: 8px; }
-    .way:hover, .way:focus-visible { border-color: var(--red); background: rgba(255, 42, 42, .06); outline: none; }
-    .way .ico { width: 30px; height: 30px; display: grid; place-items: center; border: 1px solid var(--rule-strong); color: var(--red); font-weight: 700; font-size: 11px; }
-    .way .txt { flex: 1; line-height: 1.35; }
-    .way .txt small { display: block; color: var(--muted); font-size: 11px; }
+    .way:hover, .way:focus-visible { border-color: var(--red); background: rgba(255, 42, 42, .07); outline: none; }
+    .way .key { font: 400 22px/1 var(--display); color: var(--red); text-shadow: var(--glow); width: 22px; }
+    .way .txt { flex: 1; line-height: 1.35; text-transform: uppercase; letter-spacing: .06em; font-weight: 600; font-size: 13px; }
+    .way .txt small { display: block; color: var(--muted); font-size: 11px; text-transform: none; letter-spacing: 0; font-weight: 400; }
     .way .go { color: var(--muted); }
-    .way:hover .go { color: var(--red); }
-    .win .foot { text-align: center; color: var(--faint); font-size: 11px; padding-top: 12px; margin-top: 14px; border-top: 1px solid var(--rule); }
 
     @media (max-width: 860px) {
       .grid { grid-template-columns: minmax(0, 1fr); }
-      pre.art { font-size: 6px; }
+      .screen { padding: 22px 18px 28px; border-radius: 16px; }
+      .title .stamp { position: static; display: inline-block; margin-top: 12px; font-size: 26px; }
     }
-    @media (max-width: 420px) { pre.art { font-size: 4.6px; } }
     @media print {
-      #field, .bar button { display: none; }
-      body { background: #fff; color: #000; }
-      .box, .box > .title, .box > .tag { background: #fff; }
+      .fx, #noise, .gate, .switch { display: none !important; }
+      body { background: #fff; padding: 0; }
+      .screen { box-shadow: none; background: #fff; color: #000; }
     }
   </style>
 </head>
 <body>
-  <canvas id="field" aria-hidden="true"></canvas>
+  <canvas id="noise" aria-hidden="true"></canvas>
+  <div class="fx scan" aria-hidden="true"></div>
+  <div class="fx vignette" aria-hidden="true"></div>
+  <div class="fx roll" aria-hidden="true"></div>
 
   <div class="gate" id="gate" role="dialog" aria-modal="true" aria-labelledby="gateName">
-    <div class="win">
-      <div class="titlebar"><span>~/taddheo</span><span class="spacer"></span><span class="ctl" aria-hidden="true">[-][□][x]</span></div>
+    <div class="win flicker">
+      <div class="bar"><span>term://thenz</span><span class="spacer"></span><span aria-hidden="true">● rec</span></div>
       <div class="body">
-        <div class="holo-wrap" aria-hidden="true"><pre class="spider-art"></pre></div>
-        <div class="name" id="gateName">taddheo</div>
-        <div class="role" data-i18n="gate-role">Full Stack Java Developer</div>
-        <div class="label"><b>//</b> <span data-i18n="gate-label">elige a dónde ir</span></div>
+        <div class="photo" aria-hidden="true"><pre class="spider-art"></pre></div>
+        <div class="name" id="gateName">THENZ</div>
+        <div class="role">Full Stack Java Developer</div>
+        <div class="boot" id="boot" aria-live="polite"></div>
         <a class="way" href="#portfolio" id="enter">
-          <span class="ico" aria-hidden="true">&gt;_</span>
-          <span class="txt">portfolio<small>taddheotorres.github.io/portfolio</small></span>
+          <span class="key" aria-hidden="true">1</span>
+          <span class="txt"><span data-i18n="gate-open">abrir expediente</span><small>taddheotorres.github.io/portfolio</small></span>
           <span class="go" aria-hidden="true">→</span>
         </a>
         <a class="way" href="https://github.com/taddheotorres" rel="noopener">
-          <span class="ico" aria-hidden="true">gh</span>
+          <span class="key" aria-hidden="true">2</span>
           <span class="txt">github<small>github.com/taddheotorres</small></span>
           <span class="go" aria-hidden="true">↗</span>
         </a>
-        <div class="foot">~ taddheo@eclipse ~</div>
       </div>
     </div>
   </div>
-  <div class="wrap" id="site">
-    <header class="brand">
-      <pre class="art" id="banner" aria-label="Thenz"></pre>
-      <div class="sub"><b>Taddheo de Jesús Carballo Torres</b> · <span data-i18n="role">Full Stack Java Developer · ciberseguridad (entry)</span></div>
-    </header>
 
-    <div class="bar">
-      <span class="prompt"><span class="muted">taddheo@eclipse:~$</span> <b data-i18n="cmd">cat about.md</b> <span class="cursor" aria-hidden="true"></span></span>
+  <div class="screen flicker" id="site">
+    <div class="strip">
+      <span data-i18n="file-no">Expediente n.º TT-0612</span>
+      <span><span data-i18n="class">Clasificación</span>: <b data-i18n="class-val">pública</b></span>
+      <span><span data-i18n="updated">Actualizado</span>: <b>2026-10</b></span>
       <span class="spacer"></span>
-      <button id="lang" aria-label="Cambiar idioma / switch language"><span id="es">es</span> | <span id="en">en</span></button>
-      <button id="theme" aria-label="Cambiar tema / switch theme" data-i18n="theme">tema</button>
+      <button class="switch" id="lang" aria-label="Cambiar idioma / switch language"><span id="es">es</span> / <span id="en">en</span></button>
+      <button class="switch" id="theme" aria-label="Cambiar entre monitor y papel / switch between screen and paper"><span data-i18n="mode">modo</span>: <span id="modeName"></span></button>
     </div>
+
+    <header class="title">
+      <div class="kicker" data-i18n="subject">Sujeto</div>
+      <h1>THENZ</h1>
+      <div class="sub"><b>Taddheo de Jesús Carballo Torres</b> · Full Stack Java Developer</div>
+      <span class="stamp" data-i18n="confidential">Confidencial</span>
+    </header>
 
     <div class="grid">
       <aside>
-        <div class="box">
-          <span class="title">[ <b>taddheo</b> ]</span>
-          <div class="spider holo-wrap" aria-hidden="true"><pre class="spider-art"></pre></div>
-        </div>
+        <figure class="photo" style="margin:0">
+          <pre class="spider-art" aria-hidden="true"></pre>
+          <figcaption class="cap" data-i18n="fig">Fig. 01 — emblema</figcaption>
+        </figure>
 
-        <div class="box">
-          <span class="title">[ <b data-i18n="contact">contacto</b> ]</span>
-          <dl class="kv">
-            <dt>mail</dt><span class="lead"></span><dd><a href="mailto:torrestaddheo@gmail.com">torrestaddheo@gmail.com</a></dd>
-            <dt>whatsapp</dt><span class="lead"></span><dd><a href="https://wa.me/526121071523" target="_blank" rel="noopener">612 107 1523</a></dd>
-            <dt>linkedin</dt><span class="lead"></span><dd><a href="https://linkedin.com/in/taddheo-torres-a5420227b" target="_blank" rel="noopener">taddheo-torres</a></dd>
-            <dt>github</dt><span class="lead"></span><dd><a href="https://github.com/taddheotorres" target="_blank" rel="noopener">taddheotorres</a></dd>
-            <dt data-i18n="base">base</dt><span class="lead"></span><dd>La Paz, BCS, MX</dd>
-          </dl>
-        </div>
+        <dl class="fields">
+          <div class="field"><dt data-i18n="f-name">Nombre</dt><dd>Taddheo de Jesús Carballo Torres</dd></div>
+          <div class="field"><dt data-i18n="f-alias">Alias</dt><dd>Thenz</dd></div>
+          <div class="field"><dt data-i18n="f-role">Ocupación</dt><dd>Full Stack Java Developer</dd></div>
+          <div class="field"><dt data-i18n="f-focus">Especialidad</dt><dd data-i18n="f-focus-val">Backend · seguridad de aplicaciones</dd></div>
+          <div class="field"><dt data-i18n="f-base">Base de operaciones</dt><dd>La Paz, BCS, MX</dd></div>
+          <div class="field"><dt data-i18n="f-langs">Idiomas</dt><dd data-i18n="f-langs-val">Español (nativo) · Inglés (técnico)</dd></div>
+          <div class="field"><dt data-i18n="f-clearance">Nivel de acceso</dt><dd><span class="redact">██████████</span></dd></div>
+        </dl>
 
-        <div class="box">
-          <span class="title">[ <b data-i18n="languages">idiomas</b> ]</span>
-          <dl class="kv">
-            <dt data-i18n="spanish">español</dt><span class="lead"></span><dd data-i18n="native">nativo</dd>
-            <dt data-i18n="english">inglés</dt><span class="lead"></span><dd data-i18n="english-level">intermedio (técnico)</dd>
-          </dl>
-        </div>
+        <div class="status"><span class="stamp" data-i18n="open">Abierto a propuestas</span></div>
 
-        <div class="box">
-          <span class="title">[ <b>cv</b> ]</span>
-          <a class="btn go" href="CV_TaddheoDev.pdf" target="_blank" rel="noopener" data-i18n="cv-pdf">descargar pdf</a>
-          <a class="btn" href="cv.html" target="_blank" rel="noopener" data-i18n="cv-web">ver en web</a>
-        </div>
+        <dl class="fields">
+          <div class="field"><dt data-i18n="f-mail">Correo</dt><dd><a href="mailto:torrestaddheo@gmail.com">torrestaddheo@gmail.com</a></dd></div>
+          <div class="field"><dt>WhatsApp</dt><dd><a href="https://wa.me/526121071523" target="_blank" rel="noopener">612 107 1523</a></dd></div>
+          <div class="field"><dt>LinkedIn</dt><dd><a href="https://linkedin.com/in/taddheo-torres-a5420227b" target="_blank" rel="noopener">taddheo-torres</a></dd></div>
+          <div class="field"><dt>GitHub</dt><dd><a href="https://github.com/taddheotorres" target="_blank" rel="noopener">taddheotorres</a></dd></div>
+          <div class="field"><dt data-i18n="f-docs">Documentos</dt><dd>
+            <a href="CV_TaddheoDev.pdf" target="_blank" rel="noopener" data-i18n="cv-pdf">CV (pdf)</a> ·
+            <a href="cv.html" target="_blank" rel="noopener" data-i18n="cv-web">CV (web)</a></dd></div>
+        </dl>
       </aside>
 
       <main>
-        <section>
-          <div class="head"><b>01</b><span data-i18n="section-profile">perfil</span><span class="rule" aria-hidden="true"></span></div>
-          <p class="about" data-i18n-html="profile"></p>
+        <section class="annex">
+          <h2><span class="tag" data-i18n="annex-a">Anexo A</span><span data-i18n="profile-h">Perfil</span><span class="rule" aria-hidden="true"></span></h2>
+          <p class="lead" data-i18n-html="profile"></p>
         </section>
 
-        <section class="stack">
-          <div class="head"><b>02</b><span data-i18n="section-skills">stack</span><span class="rule" aria-hidden="true"></span></div>
-          <div class="box">
-            <span class="title">[ <b>stack</b> ]</span>
-            <dl class="kv">
-              <dt>backend</dt><span class="lead"></span><dd>Java 17/21 · Spring Boot · JPA/Hibernate · REST</dd>
-              <dt>frontend</dt><span class="lead"></span><dd>Angular 17–21 · TypeScript · RxJS</dd>
-              <dt>data</dt><span class="lead"></span><dd>MySQL 8 · PostgreSQL · Flyway</dd>
-              <dt>realtime</dt><span class="lead"></span><dd>WebSockets (STOMP)</dd>
-              <dt>security</dt><span class="lead"></span><dd>Spring Security · JWT · OWASP</dd>
-              <dt>payments</dt><span class="lead"></span><dd>Stripe API</dd>
-              <dt>infra</dt><span class="lead"></span><dd>Docker · Docker Compose · nginx · Railway</dd>
-              <dt>testing</dt><span class="lead"></span><dd>JUnit 5 · Mockito · Testcontainers</dd>
-              <dt>tools</dt><span class="lead"></span><dd>Git · JGit · Maven · MapStruct · Python</dd>
-            </dl>
-          </div>
+        <section class="annex">
+          <h2><span class="tag" data-i18n="annex-b">Anexo B</span><span data-i18n="arsenal-h">Arsenal</span><span class="rule" aria-hidden="true"></span></h2>
+          <table class="arsenal">
+            <tr><th>Backend</th><td>Java 17/21 · Spring Boot · JPA/Hibernate · REST</td></tr>
+            <tr><th>Frontend</th><td>Angular 17–21 · TypeScript · RxJS</td></tr>
+            <tr><th data-i18n="data">Datos</th><td>MySQL 8 · PostgreSQL · Flyway</td></tr>
+            <tr><th data-i18n="realtime">Tiempo real</th><td>WebSockets (STOMP)</td></tr>
+            <tr><th data-i18n="security">Seguridad</th><td>Spring Security · JWT · OWASP</td></tr>
+            <tr><th data-i18n="payments">Pagos</th><td>Stripe API</td></tr>
+            <tr><th>Infra</th><td>Docker · Docker Compose · nginx · Railway</td></tr>
+            <tr><th>Testing</th><td>JUnit 5 · Mockito · Testcontainers</td></tr>
+            <tr><th data-i18n="tools">Herramientas</th><td>Git · JGit · Maven · MapStruct · Python</td></tr>
+          </table>
         </section>
 
-        <section>
-          <div class="head"><b>03</b><span data-i18n="section-projects">proyectos</span><span class="rule" aria-hidden="true"></span></div>
-          <div class="projects">
-            <article class="box project">
-              <span class="title">[ <b>livestate</b> ]</span><span class="tag">[DEMO]</span>
-              <p data-i18n="project-livestate"></p>
-              <div class="tech">Java 17 <span>·</span> Spring Boot <span>·</span> Angular <span>·</span> MySQL 8 <span>·</span> Stripe <span>·</span> JWT <span>·</span> WebSockets <span>·</span> Docker</div>
-              <div class="links"><a class="btn go" href="https://github.com/taddheotorres/livestate" target="_blank" rel="noopener">github</a></div>
-            </article>
-            <article class="box project">
-              <span class="title">[ <b>prismgit</b> ]</span>
-              <p data-i18n="project-prismgit"></p>
-              <div class="tech">Java 21 <span>·</span> Spring Boot 3.4 <span>·</span> Angular 19 <span>·</span> JGit <span>·</span> Flyway <span>·</span> PostgreSQL <span>·</span> Swagger</div>
-              <div class="links"><a class="btn go" href="https://github.com/taddheotorres/prismgit" target="_blank" rel="noopener">github</a></div>
-            </article>
-            <article class="box project">
-              <span class="title">[ <b>crystalctl</b> ]</span>
-              <p data-i18n="project-crystalctl"></p>
-              <div class="tech">Python <span>·</span> systemd <span>·</span> HTML/CSS <span>·</span> apt / dnf / pacman / zypper</div>
-              <div class="links"><a class="btn go" href="https://github.com/taddheotorres/crystalctl" target="_blank" rel="noopener">github</a></div>
-            </article>
-            <article class="box project">
-              <span class="title">[ <b>no-swipe-overview</b> ]</span>
-              <p data-i18n="project-nso"></p>
-              <div class="tech">JavaScript <span>·</span> GJS <span>·</span> GNOME 48–51</div>
-              <div class="links"><a class="btn go" href="https://github.com/taddheotorres/no-swipe-overview" target="_blank" rel="noopener">github</a></div>
-            </article>
-          </div>
+        <section class="annex">
+          <h2><span class="tag" data-i18n="annex-c">Anexo C</span><span data-i18n="ops-h">Operaciones</span><span class="rule" aria-hidden="true"></span></h2>
+          <article class="case">
+            <div class="head"><span class="no" data-i18n="case-1">Caso 01</span><h3>Livestate</h3><span class="stamp">Demo</span></div>
+            <p data-i18n="project-livestate"></p>
+            <div class="tech"><b>Stack</b>Java 17 · Spring Boot · Angular · MySQL 8 · Stripe · JWT · WebSockets · Docker</div>
+            <a class="open" href="https://github.com/taddheotorres/livestate" target="_blank" rel="noopener" data-i18n="open-repo">abrir en github</a>
+          </article>
+          <article class="case">
+            <div class="head"><span class="no" data-i18n="case-2">Caso 02</span><h3>PrismGit</h3></div>
+            <p data-i18n="project-prismgit"></p>
+            <div class="tech"><b>Stack</b>Java 21 · Spring Boot 3.4 · Angular 19 · JGit · Flyway · PostgreSQL · Swagger</div>
+            <a class="open" href="https://github.com/taddheotorres/prismgit" target="_blank" rel="noopener" data-i18n="open-repo">abrir en github</a>
+          </article>
+          <article class="case">
+            <div class="head"><span class="no" data-i18n="case-3">Caso 03</span><h3>crystalctl</h3></div>
+            <p data-i18n="project-crystalctl"></p>
+            <div class="tech"><b>Stack</b>Python · systemd · HTML/CSS · apt / dnf / pacman / zypper</div>
+            <a class="open" href="https://github.com/taddheotorres/crystalctl" target="_blank" rel="noopener" data-i18n="open-repo">abrir en github</a>
+          </article>
+          <article class="case">
+            <div class="head"><span class="no" data-i18n="case-4">Caso 04</span><h3>No Swipe Overview</h3></div>
+            <p data-i18n="project-nso"></p>
+            <div class="tech"><b>Stack</b>JavaScript · GJS · GNOME 48–51</div>
+            <a class="open" href="https://github.com/taddheotorres/no-swipe-overview" target="_blank" rel="noopener" data-i18n="open-repo">abrir en github</a>
+          </article>
         </section>
 
-        <section>
-          <div class="head"><b>04</b><span data-i18n="section-education">educación</span><span class="rule" aria-hidden="true"></span></div>
-          <div class="box">
-            <span class="title">[ <b>uabcs</b> ]</span>
-            <dl class="kv">
-              <dt data-i18n="edu-key">carrera</dt><span class="lead"></span><dd data-i18n="edu-degree">Ingeniería en Desarrollo de Software</dd>
-              <dt data-i18n="edu-school-key">escuela</dt><span class="lead"></span><dd data-i18n="edu-school">Universidad Autónoma de Baja California Sur</dd>
-              <dt data-i18n="edu-when-key">periodo</dt><span class="lead"></span><dd data-i18n="edu-date">ago 2024 — actual · 5.º semestre</dd>
-            </dl>
-          </div>
+        <section class="annex">
+          <h2><span class="tag" data-i18n="annex-d">Anexo D</span><span data-i18n="edu-h">Formación</span><span class="rule" aria-hidden="true"></span></h2>
+          <table class="arsenal">
+            <tr><th data-i18n="edu-key">Carrera</th><td data-i18n="edu-degree">Ingeniería en Desarrollo de Software</td></tr>
+            <tr><th data-i18n="edu-school-key">Institución</th><td data-i18n="edu-school">Universidad Autónoma de Baja California Sur (UABCS)</td></tr>
+            <tr><th data-i18n="edu-when-key">Periodo</th><td data-i18n="edu-date">ago 2024 — en curso</td></tr>
+          </table>
         </section>
-
-        <footer><span class="muted">taddheo@eclipse:~$</span> exit <span class="red">0</span></footer>
       </main>
     </div>
+
+    <footer>
+      <span data-i18n="end">Fin del expediente</span><span>·</span><span data-i18n="page">pág. 1 / 1</span>
+      <span class="spacer"></span><span>thenz@eclipse</span>
+    </footer>
   </div>
 
   <script>
-    // 5x7 glyphs, one 5-bit row per number
-    const FONT = {"A":[14,17,17,31,17,17,17],"B":[30,17,17,30,17,17,30],"C":[14,17,16,16,16,17,14],"D":[28,18,17,17,17,18,28],"E":[31,16,16,30,16,16,31],"F":[31,16,16,30,16,16,16],"G":[14,17,16,23,17,17,15],"H":[17,17,17,31,17,17,17],"I":[14,4,4,4,4,4,14],"J":[7,2,2,2,2,18,12],"K":[17,18,20,24,20,18,17],"L":[16,16,16,16,16,16,31],"M":[17,27,21,21,17,17,17],"N":[17,17,25,21,19,17,17],"O":[14,17,17,17,17,17,14],"P":[30,17,17,30,16,16,16],"Q":[14,17,17,17,21,18,13],"R":[30,17,17,30,20,18,17],"S":[15,16,16,14,1,1,30],"T":[31,4,4,4,4,4,4],"U":[17,17,17,17,17,17,14],"V":[17,17,17,17,17,10,4],"W":[17,17,17,21,21,21,10],"X":[17,17,10,4,10,17,17],"Y":[17,17,17,10,4,4,4],"Z":[31,1,2,4,8,16,31],"0":[14,17,19,21,25,17,14],"1":[4,12,4,4,4,4,14],"2":[14,17,1,2,4,8,31],"3":[31,2,4,2,1,17,14],"4":[2,6,10,18,31,2,2],"5":[31,16,30,1,1,17,14],"6":[6,8,16,30,17,17,14],"7":[31,1,2,4,8,8,8],"8":[14,17,17,14,17,17,14],"9":[14,17,17,15,1,2,12],"/":[0,1,2,4,8,16,0],"-":[0,0,0,31,0,0,0],".":[0,0,0,0,0,12,12],":":[0,12,12,0,12,12,0]," ":[0,0,0,0,0,0,0]};
-
-    const i18n = {
-      role: { es: 'Full Stack Java Developer · ciberseguridad (entry)', en: 'Full Stack Java Developer · cybersecurity (entry)' },
-      cmd: { es: 'cat about.md', en: 'cat about.en.md' },
-      theme: { es: 'tema', en: 'theme' },
-      contact: { es: 'contacto', en: 'contact' },
-      base: { es: 'base', en: 'based in' },
-      languages: { es: 'idiomas', en: 'languages' },
-      spanish: { es: 'español', en: 'spanish' },
-      english: { es: 'inglés', en: 'english' },
-      native: { es: 'nativo', en: 'native' },
-      'english-level': { es: 'intermedio (técnico)', en: 'intermediate (technical)' },
-      'cv-pdf': { es: 'descargar pdf', en: 'download pdf' },
-      'cv-web': { es: 'ver en web', en: 'view online' },
-      'section-profile': { es: 'perfil', en: 'profile' },
-      'section-skills': { es: 'stack', en: 'stack' },
-      'section-projects': { es: 'proyectos', en: 'projects' },
-      'section-education': { es: 'educación', en: 'education' },
-      profile: {
-        es: '<strong>Estudiante de Ingeniería en Desarrollo de Software</strong> en UABCS (5.º semestre). Construyo aplicaciones web completas con <code>Java</code> / <code>Spring Boot</code> en el backend y <code>Angular</code> en el frontend: pagos con <code>Stripe</code>, mensajería en tiempo real con WebSockets, <code>Docker</code> y bases de datos relacionales. Busco mi primera oportunidad formal como <span class="hl">Java Dev Trainee / JR</span> o en <span class="hl">ciberseguridad entry-level</span>.',
-        en: '<strong>Software Engineering student</strong> at UABCS (5th semester). I build full-stack web apps with <code>Java</code> / <code>Spring Boot</code> on the backend and <code>Angular</code> on the frontend: <code>Stripe</code> payments, real-time messaging over WebSockets, <code>Docker</code> and relational databases. Looking for my first formal role as a <span class="hl">Java Dev Trainee / JR</span> or in <span class="hl">entry-level cybersecurity</span>.'
-      },
-      'project-livestate': {
-        es: 'Demo de una plataforma de bienes raíces: catálogo, reservas, pagos con Stripe, chat en tiempo real y paneles por rol. Muestra lo que puedo construir para un cliente.',
-        en: 'Demo of a real estate platform: catalog, bookings, Stripe payments, real-time chat and role-based dashboards. A sample of what I can build for a client.'
-      },
-      'project-prismgit': {
-        es: 'Dashboard que narra la historia visual de un repositorio Git: sincroniza commits con JGit o la API de GitHub, genera estadísticas, timelines y heatmaps, y expone 14 endpoints REST documentados con Swagger.',
-        en: 'Dashboard that tells the visual story of a Git repository: syncs commits with JGit or the GitHub API, builds stats, timelines and heatmaps, and exposes 14 REST endpoints documented with Swagger.'
-      },
-      'project-crystalctl': {
-        es: 'Gestor local de tu stack para Linux: Apache, Nginx, PHP-FPM, MariaDB, MySQL, PostgreSQL, MongoDB, Redis y Memcached desde un CLI y un panel estilo terminal. Instala con apt, dnf, pacman o zypper.',
-        en: 'Local stack manager for Linux: Apache, Nginx, PHP-FPM, MariaDB, MySQL, PostgreSQL, MongoDB, Redis and Memcached from one CLI and a terminal-style panel. Installs with apt, dnf, pacman or zypper.'
-      },
-      'project-nso': {
-        es: 'Extensión de GNOME Shell (48–51) que bloquea el gesto de swipe que abre el overview. Pensada para quien usa ArcMenu u otro lanzador.',
-        en: 'GNOME Shell extension (48–51) that blocks the swipe gesture that opens the overview. Made for ArcMenu and other launcher users.'
-      },
-      'edu-key': { es: 'carrera', en: 'degree' },
-      'edu-school-key': { es: 'escuela', en: 'school' },
-      'edu-when-key': { es: 'periodo', en: 'period' },
-      'edu-degree': { es: 'Ingeniería en Desarrollo de Software', en: 'Software Engineering' },
-      'edu-school': { es: 'Universidad Autónoma de Baja California Sur', en: 'Autonomous University of Baja California Sur' },
-      'edu-date': { es: 'ago 2024 — actual · 5.º semestre', en: 'Aug 2024 — present · 5th semester' },
-      'gate-role': { es: 'Full Stack Java Developer', en: 'Full Stack Java Developer' },
-      'gate-label': { es: 'elige a dónde ir', en: 'pick where to go' }
-    };
-
-    const root = document.documentElement;
-    const store = {
-      get(k) { try { return localStorage.getItem(k); } catch (_) { return null; } },
-      set(k, v) { try { localStorage.setItem(k, v); } catch (_) {} }
-    };
-
-    let lang = store.get('portfolio-lang') || ((navigator.language || 'es').startsWith('en') ? 'en' : 'es');
-    function applyLang(next) {
-      lang = next;
-      store.set('portfolio-lang', lang);
-      document.querySelectorAll('[data-i18n]').forEach((el) => { const t = i18n[el.dataset.i18n]; if (t) el.textContent = t[lang]; });
-      document.querySelectorAll('[data-i18n-html]').forEach((el) => { const t = i18n[el.dataset.i18nHtml]; if (t) el.innerHTML = t[lang]; });
-      document.getElementById('es').className = lang === 'es' ? 'on' : '';
-      document.getElementById('en').className = lang === 'en' ? 'on' : '';
-      root.lang = lang;
-    }
-    document.getElementById('lang').onclick = () => applyLang(lang === 'es' ? 'en' : 'es');
-
-    const savedTheme = store.get('portfolio-theme');
-    if (savedTheme) root.dataset.theme = savedTheme;
-    document.getElementById('theme').onclick = () => {
-      const dark = root.dataset.theme ? root.dataset.theme === 'dark' : !matchMedia('(prefers-color-scheme: light)').matches;
-      root.dataset.theme = dark ? 'light' : 'dark';
-      store.set('portfolio-theme', root.dataset.theme);
-    };
-
-    /* 5x7 block letters as text */
-    function banner(text) {
-      const chars = text.toUpperCase().split('');
-      return [0, 1, 2, 3, 4, 5, 6].map((y) => chars.map((ch) => {
-        const bits = (FONT[ch] || FONT[' '])[y];
-        let row = '';
-        for (let x = 0; x < 5; x++) row += bits & (16 >> x) ? '█' : ' ';
-        return row;
-      }).join(' ')).join('\n');
-    }
-    document.getElementById('banner').textContent = banner('THENZ');
-
-    /* the ASCII spider from the GitHub card: denser characters get brighter reds */
     const SPIDER = `                        :--=--:.
                        *%+-:.  .:                   .:==--:.
                       -%:      ..                 -*%##+----:.::
@@ -422,19 +340,142 @@
                 ::-.
                .-:
                :`;
+
+    const i18n = {
+      'file-no': { es: 'Expediente n.º TT-0612', en: 'Case file no. TT-0612' },
+      class: { es: 'Clasificación', en: 'Classification' },
+      'class-val': { es: 'pública', en: 'public' },
+      updated: { es: 'Actualizado', en: 'Updated' },
+      mode: { es: 'modo', en: 'mode' },
+      subject: { es: 'Sujeto', en: 'Subject' },
+      confidential: { es: 'Confidencial', en: 'Confidential' },
+      fig: { es: 'Fig. 01 — emblema', en: 'Fig. 01 — emblem' },
+      'f-name': { es: 'Nombre', en: 'Name' },
+      'f-alias': { es: 'Alias', en: 'Alias' },
+      'f-role': { es: 'Ocupación', en: 'Occupation' },
+      'f-focus': { es: 'Especialidad', en: 'Focus' },
+      'f-focus-val': { es: 'Backend · seguridad de aplicaciones', en: 'Backend · application security' },
+      'f-base': { es: 'Base de operaciones', en: 'Base of operations' },
+      'f-langs': { es: 'Idiomas', en: 'Languages' },
+      'f-langs-val': { es: 'Español (nativo) · Inglés (técnico)', en: 'Spanish (native) · English (technical)' },
+      'f-clearance': { es: 'Nivel de acceso', en: 'Clearance' },
+      open: { es: 'Abierto a propuestas', en: 'Open to proposals' },
+      'f-mail': { es: 'Correo', en: 'Email' },
+      'f-docs': { es: 'Documentos', en: 'Documents' },
+      'cv-pdf': { es: 'CV (pdf)', en: 'CV (pdf)' },
+      'cv-web': { es: 'CV (web)', en: 'CV (web)' },
+      'annex-a': { es: 'Anexo A', en: 'Annex A' },
+      'annex-b': { es: 'Anexo B', en: 'Annex B' },
+      'annex-c': { es: 'Anexo C', en: 'Annex C' },
+      'annex-d': { es: 'Anexo D', en: 'Annex D' },
+      'profile-h': { es: 'Perfil', en: 'Profile' },
+      'arsenal-h': { es: 'Arsenal', en: 'Arsenal' },
+      'ops-h': { es: 'Operaciones', en: 'Operations' },
+      'edu-h': { es: 'Formación', en: 'Education' },
+      data: { es: 'Datos', en: 'Data' },
+      realtime: { es: 'Tiempo real', en: 'Real time' },
+      security: { es: 'Seguridad', en: 'Security' },
+      payments: { es: 'Pagos', en: 'Payments' },
+      tools: { es: 'Herramientas', en: 'Tools' },
+      'case-1': { es: 'Caso 01', en: 'Case 01' },
+      'case-2': { es: 'Caso 02', en: 'Case 02' },
+      'case-3': { es: 'Caso 03', en: 'Case 03' },
+      'case-4': { es: 'Caso 04', en: 'Case 04' },
+      'open-repo': { es: 'abrir en github', en: 'open on github' },
+      profile: {
+        es: 'Desarrollador <strong>full stack</strong> enfocado en <strong>Java / Spring Boot</strong> y <strong>Angular</strong>. Diseño y construyo aplicaciones web completas: APIs REST, pagos con Stripe, mensajería en tiempo real con WebSockets, contenedores con Docker y bases de datos relacionales, cuidando la seguridad desde el diseño. Estudio Ingeniería en Desarrollo de Software en la UABCS. <span class="hl">Abierto a propuestas</span>: proyectos con clientes y colaboraciones.',
+        en: '<strong>Full stack</strong> developer focused on <strong>Java / Spring Boot</strong> and <strong>Angular</strong>. I design and build complete web applications: REST APIs, Stripe payments, real-time messaging over WebSockets, Docker containers and relational databases, with security considered from the start. Studying Software Engineering at UABCS. <span class="hl">Open to proposals</span>: client projects and collaborations.'
+      },
+      'project-livestate': {
+        es: 'Demo de una plataforma de bienes raíces: catálogo, reservas, pagos con Stripe, chat en tiempo real y paneles por rol. Muestra lo que puedo construir para un cliente.',
+        en: 'Demo of a real estate platform: catalog, bookings, Stripe payments, real-time chat and role-based dashboards. A sample of what I can build for a client.'
+      },
+      'project-prismgit': {
+        es: 'Dashboard que narra la historia visual de un repositorio Git: sincroniza commits con JGit o la API de GitHub, genera estadísticas, timelines y heatmaps, y expone 14 endpoints REST documentados con Swagger.',
+        en: 'Dashboard that tells the visual story of a Git repository: syncs commits with JGit or the GitHub API, builds stats, timelines and heatmaps, and exposes 14 REST endpoints documented with Swagger.'
+      },
+      'project-crystalctl': {
+        es: 'Gestor local del stack para Linux: Apache, Nginx, PHP-FPM, MariaDB, MySQL, PostgreSQL, MongoDB, Redis y Memcached desde un CLI y un panel. Instala con apt, dnf, pacman o zypper.',
+        en: 'Local stack manager for Linux: Apache, Nginx, PHP-FPM, MariaDB, MySQL, PostgreSQL, MongoDB, Redis and Memcached from one CLI and a panel. Installs with apt, dnf, pacman or zypper.'
+      },
+      'project-nso': {
+        es: 'Extensión de GNOME Shell (48–51) que bloquea el gesto de swipe hacia el overview. Pensada para quien usa ArcMenu u otro lanzador.',
+        en: 'GNOME Shell extension (48–51) that blocks the swipe gesture into the overview. Made for ArcMenu and other launcher users.'
+      },
+      'edu-key': { es: 'Carrera', en: 'Degree' },
+      'edu-school-key': { es: 'Institución', en: 'Institution' },
+      'edu-when-key': { es: 'Periodo', en: 'Period' },
+      'edu-degree': { es: 'Ingeniería en Desarrollo de Software', en: 'Software Engineering' },
+      'edu-school': { es: 'Universidad Autónoma de Baja California Sur (UABCS)', en: 'Autonomous University of Baja California Sur (UABCS)' },
+      'edu-date': { es: 'ago 2024 — en curso', en: 'Aug 2024 — ongoing' },
+      end: { es: 'Fin del expediente', en: 'End of file' },
+      page: { es: 'pág. 1 / 1', en: 'page 1 / 1' },
+      'gate-open': { es: 'abrir expediente', en: 'open case file' },
+      boot: {
+        es: '> conectando con el archivo... ok\n> verificando sujeto: THENZ... ok\n> selecciona una opción_',
+        en: '> connecting to archive... ok\n> verifying subject: THENZ... ok\n> pick an option_'
+      }
+    };
+
+    const root = document.documentElement;
+    const store = {
+      get(k) { try { return localStorage.getItem(k); } catch (_) { return null; } },
+      set(k, v) { try { localStorage.setItem(k, v); } catch (_) {} }
+    };
+    const reduced = matchMedia('(prefers-reduced-motion: reduce)');
+
+    let lang = store.get('portfolio-lang') || ((navigator.language || 'es').startsWith('en') ? 'en' : 'es');
+    function applyLang(next) {
+      lang = next;
+      store.set('portfolio-lang', lang);
+      document.querySelectorAll('[data-i18n]').forEach((el) => { const t = i18n[el.dataset.i18n]; if (t) el.textContent = t[lang]; });
+      document.querySelectorAll('[data-i18n-html]').forEach((el) => { const t = i18n[el.dataset.i18nHtml]; if (t) el.innerHTML = t[lang]; });
+      document.getElementById('es').className = lang === 'es' ? 'on' : '';
+      document.getElementById('en').className = lang === 'en' ? 'on' : '';
+      root.lang = lang;
+      showMode();
+      typeBoot();
+    }
+    document.getElementById('lang').onclick = () => applyLang(lang === 'es' ? 'en' : 'es');
+
+    /* dark = the file on a CRT, light = the file printed on paper */
+    const isLight = () => root.dataset.theme ? root.dataset.theme === 'light' : matchMedia('(prefers-color-scheme: light)').matches;
+    function showMode() {
+      document.getElementById('modeName').textContent = isLight() ? (lang === 'es' ? 'papel' : 'paper') : 'crt';
+    }
+    const savedTheme = store.get('portfolio-theme');
+    if (savedTheme) root.dataset.theme = savedTheme;
+    document.getElementById('theme').onclick = () => {
+      root.dataset.theme = isLight() ? 'dark' : 'light';
+      store.set('portfolio-theme', root.dataset.theme);
+      showMode();
+    };
+
+    /* the ASCII spider, coloured by character density */
     const tier = (c) => ' .:-'.includes(c) ? 0 : '=+*'.includes(c) ? 1 : '#%'.includes(c) ? 2 : 3;
     const spiderHTML = SPIDER.split('\n').map((line) =>
       line.replace(/[ .:-]+|[=+*]+|[#%]+|@+/g, (run) => `<span class="t${tier(run[0])}">${run}</span>`)).join('\n');
     document.querySelectorAll('.spider-art').forEach((el) => (el.innerHTML = spiderHTML));
 
+    /* boot lines typed into the start screen */
+    let bootTimer = null;
+    function typeBoot() {
+      const el = document.getElementById('boot'), text = i18n.boot[lang];
+      clearInterval(bootTimer);
+      if (reduced.matches) { el.textContent = text; return; }
+      let i = 0;
+      el.textContent = '';
+      bootTimer = setInterval(() => { el.textContent = text.slice(0, ++i); if (i >= text.length) clearInterval(bootTimer); }, 22);
+    }
+
     /* start screen: shown once per visit unless the link already points into the portfolio */
     const gate = document.getElementById('gate'), site = document.getElementById('site');
-    function enter(push) {
+    function enter() {
       gate.classList.add('gone');
       document.body.classList.remove('gated');
       site.inert = false;
       try { sessionStorage.setItem('entered', '1'); } catch (_) {}
-      if (push && location.hash !== '#portfolio') history.replaceState(null, '', '#portfolio');
+      if (location.hash !== '#portfolio') history.replaceState(null, '', '#portfolio');
     }
     let entered = false;
     try { entered = sessionStorage.getItem('entered') === '1'; } catch (_) {}
@@ -445,53 +486,34 @@
       site.inert = true;
       document.getElementById('enter').focus({ preventScroll: true });
     }
-    document.getElementById('enter').addEventListener('click', (e) => { e.preventDefault(); enter(true); });
-    addEventListener('keydown', (e) => { if (e.key === 'Escape' && !gate.classList.contains('gone')) enter(true); });
+    document.getElementById('enter').addEventListener('click', (e) => { e.preventDefault(); enter(); });
+    addEventListener('keydown', (e) => {
+      if (gate.classList.contains('gone')) return;
+      if (e.key === 'Escape' || e.key === '1') enter();
+      if (e.key === '2') location.href = 'https://github.com/taddheotorres';
+    });
 
-
-    /* animated ASCII field: interfering waves on a density ramp, one fillText per row */
-    (function field() {
-      const canvas = document.getElementById('field'), ctx = canvas.getContext('2d');
-      const RAMP = ' .,:;-=+*#%@';
-      const still = matchMedia('(prefers-reduced-motion: reduce)');
-      let cols = 0, rows = 0, cw = 8, ch = 14, last = 0;
-      function size() {
-        const dpr = window.devicePixelRatio || 1;
-        canvas.width = innerWidth * dpr; canvas.height = innerHeight * dpr;
-        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-        ctx.font = '12px ' + getComputedStyle(root).getPropertyValue('--mono');
-        cw = ctx.measureText('M').width;
-        cols = Math.ceil(innerWidth / cw); rows = Math.ceil(innerHeight / ch);
-      }
+    /* CRT static: a tiny random image scaled up, redrawn about 12 times a second */
+    (function noise() {
+      const c = document.getElementById('noise'), ctx = c.getContext('2d');
+      c.width = 160; c.height = 100;
+      const img = ctx.createImageData(c.width, c.height);
+      let last = 0;
       function frame(now) {
-        if (!document.hidden && now - last > 70) {
+        if (!document.hidden && !isLight() && now - last > 80) {
           last = now;
-          const t = still.matches ? 0 : now / 1000;
-          const css = getComputedStyle(root);
-          const rgb = css.getPropertyValue('--field').trim(), alpha = parseFloat(css.getPropertyValue('--field-alpha'));
-          ctx.clearRect(0, 0, innerWidth, innerHeight);
-          ctx.textBaseline = 'top';
-          for (let y = 0; y < rows; y++) {
-            let line = '';
-            for (let x = 0; x < cols; x++) {
-              const v = Math.sin(x * 0.09 + t * 0.9) + Math.sin(y * 0.17 - t * 0.6)
-                      + Math.sin(x * 0.05 + y * 0.11 + t * 0.45) + Math.sin(Math.hypot(x - cols * 0.7, y - rows * 0.3) * 0.12 - t);
-              line += RAMP[Math.min(RAMP.length - 1, Math.floor(((v + 4) / 8) ** 1.15 * RAMP.length))];
-            }
-            ctx.fillStyle = `rgba(${rgb}, ${alpha * (0.45 + 0.55 * y / rows)})`;
-            ctx.fillText(line, 0, y * ch);
+          for (let i = 0; i < img.data.length; i += 4) {
+            const v = Math.random() * 255;
+            img.data[i] = v; img.data[i + 1] = v * 0.35; img.data[i + 2] = v * 0.35; img.data[i + 3] = 255;
           }
+          ctx.putImageData(img, 0, 0);
         }
-        if (!still.matches) requestAnimationFrame(frame);
+        if (!reduced.matches) requestAnimationFrame(frame);
       }
-      size();
-      addEventListener('resize', () => { size(); if (still.matches) frame(performance.now() + 1000); });
-      still.addEventListener && still.addEventListener('change', () => requestAnimationFrame(frame));
       requestAnimationFrame(frame);
     })();
 
     applyLang(lang);
-    document.querySelectorAll('.head .rule').forEach((el) => (el.textContent = '─'.repeat(160)));
   </script>
 </body>
 </html>
