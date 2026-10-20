@@ -386,71 +386,72 @@
     }
     document.getElementById('banner').textContent = banner('TADDHEO');
 
-    /* Spider hologram: a real 3D model (two body spheres, eight jointed legs, fangs) sampled into points with
-       normals, spun and lit like the classic ASCII donut: z-buffer, perspective, and the character picked by how
-       much light each point gets. A dotted ring underneath plays the projector. */
-    const MODEL = (() => {
-      const pts = [];  // [x, y, z, nx, ny, nz, kind]  kind 0 = body, 1 = ring
-      const ellipsoid = (cx, cy, cz, rx, ry, rz, n) => {
-        for (let i = 0; i <= n; i++) {
-          const th = Math.PI * i / n;
-          for (let j = 0; j < n * 2; j++) {
-            const ph = Math.PI * j / n, nx = Math.sin(th) * Math.cos(ph), ny = Math.cos(th), nz = Math.sin(th) * Math.sin(ph);
-            const l = Math.hypot(nx / rx, ny / ry, nz / rz) || 1;
-            pts.push([cx + rx * nx, cy + ry * ny, cz + rz * nz, nx / rx / l, ny / ry / l, nz / rz / l, 0]);
-          }
-        }
-      };
-      const tube = (p, q, r0, r1) => {
-        const d = [q[0] - p[0], q[1] - p[1], q[2] - p[2]], len = Math.hypot(...d), u = d.map((v) => v / len);
-        const a = Math.abs(u[1]) < 0.9 ? [0, 1, 0] : [1, 0, 0];
-        let v = [u[1] * a[2] - u[2] * a[1], u[2] * a[0] - u[0] * a[2], u[0] * a[1] - u[1] * a[0]];
-        const vl = Math.hypot(...v); v = v.map((c) => c / vl);
-        const w = [u[1] * v[2] - u[2] * v[1], u[2] * v[0] - u[0] * v[2], u[0] * v[1] - u[1] * v[0]];
-        const steps = Math.ceil(len * 14);
-        for (let i = 0; i <= steps; i++) {
-          const t = i / steps, r = r0 + (r1 - r0) * t;
-          for (let k = 0; k < 10; k++) {
-            const al = Math.PI * 2 * k / 10, c = Math.cos(al), s = Math.sin(al);
-            const n = [v[0] * c + w[0] * s, v[1] * c + w[1] * s, v[2] * c + w[2] * s];
-            pts.push([p[0] + d[0] * t + n[0] * r, p[1] + d[1] * t + n[1] * r, p[2] + d[2] * t + n[2] * r, ...n, 0]);
-          }
-        }
-        ellipsoid(q[0], q[1], q[2], r1 * 1.15, r1 * 1.15, r1 * 1.15, 4);  // joint
-      };
-      ellipsoid(0, 0.15, 0.75, 1.0, 0.82, 1.1, 34);      // cephalothorax (front = +z)
-      ellipsoid(0, 0.65, -1.9, 1.65, 1.4, 2.05, 46);     // abdomen
-      for (const side of [-1, 1]) {
-        [62, 24, -14, -52].forEach((deg, i) => {
-          const f = deg * Math.PI / 180, dx = side * Math.cos(f), dz = Math.sin(f);
-          const base = [0.6 * dx, 0.2, 0.75 + 0.75 * dz];
-          const reach = i === 0 || i === 3 ? 1.15 : 1;      // front and back pairs are longer
-          const knee = [base[0] + dx * 1.5 * reach, base[1] + 1.45, base[2] + dz * 1.5 * reach];
-          const ankle = [knee[0] + dx * 1.7 * reach, knee[1] - 0.35, knee[2] + dz * 1.7 * reach];
-          const foot = [ankle[0] + dx * 0.9 * reach, -1.75, ankle[2] + dz * 0.9 * reach];
-          tube(base, knee, 0.2, 0.16); tube(knee, ankle, 0.16, 0.12); tube(ankle, foot, 0.12, 0.06);
-        });
-        tube([side * 0.28, -0.1, 1.55], [side * 0.18, -0.6, 1.85], 0.12, 0.05);  // fangs
+    /* Spider hologram: the original ASCII spider, kept as drawn. A flat drawing turned a full 360° collapses to
+       a line, so instead it sways like a projection (about ±35° with a slow tilt) and its parts sit on separate
+       depth layers: body in front, legs behind, faint web strands at the back. Perspective then shifts the
+       layers against each other, which is what reads as depth. */
+    const SPIDER = `                        :--=--:.
+                       *%+-:.  .:                   .:==--:.
+                      -%:      ..                 -*%##+----:.::
+                     :%=       =             .-+**=:.        --
+                    :%#       ==        :--*#*+:          .--
+                    =@*      :*.      .*@%+-..          .==.
+                    .*#+.   .*-      :%%=   .         .==:
+                   . .%%....++    ...#%.    .       :==.
+                  .  .-@=..=#-...  .#%.    .      .==.
+              ===.   . #%.:*+    ..+@-     .    :+#***+=--::.
+             .#+%#-  . -@*=+:...  :@+..    :-+*****=:     ..
+              - :+@=. ..%@-:      #%: :-+*%#*=...       ...
+              :.. -**:  +%++= .  :@=.*%%#+.   .      .-:.
+         =-.#%#-:. .*@*=#@@%**#:-%+-%#=:.   ..    .-+=.
+       .#@*@@++#@@%@@@@@@@@@@@%@#*##-.  .  .   :-++-.
+      .%%=+-.:+@@@*=+%@@@@@@@@%#%*:..  .  ::-=++-.
+      +*:-.. :@@%+++#@@@@@@@@@@@@%-....:-++=-:
+    .#*.:   .#@@@@@@@@@@@@@%@@%++##+=-:::.
+   :*#  ....-@@@@@@@@@@@@%#@@@#===*#=. :
+  .#*.     .:%@@@@@@@@@@%%@@@+=-:. +#= .
+  *#..      .+@@@@@@@@@@@@@%+=-    .:*=
+  #-    ... :=#@@@@@@@@@@@#**+=....   --
+  #........:==+*%%%@@@@@%#++=-:::.     :-
+ .+      .--:--==++++#@%*+-     .:::.   .:
+ .:    :-:    ......+*#*+.          ......
+ :  .:-.        .  -%=++.
+ :..:            ..#:-=.
+  .              .+::-
+                 -:::
+                ::-.
+               .-:
+               :`;
+    const tier = (c) => ' .:-'.includes(c) ? 0 : '=+*'.includes(c) ? 1 : '#%'.includes(c) ? 2 : 3;
+    const POINTS = (() => {
+      const lines = SPIDER.split('\n'), W = Math.max(...lines.map((l) => l.length)), H = lines.length, pts = [];
+      const LAYER = [-6, -1, 2, 5];  // z per tier: web, legs, joints, body
+      lines.forEach((line, y) => [...line].forEach((ch, x) => {
+        if (ch !== ' ') pts.push([x - W / 2, (y - H / 2) * 2, LAYER[tier(ch)], tier(ch), ch]);
+      }));
+      for (let k = 0; k < 120; k++) {  // projector ring under the spider
+        const al = Math.PI * 2 * k / 120;
+        pts.push([Math.cos(al) * W * 0.42, H * 1.05, Math.sin(al) * W * 0.22, 0, '.']);
       }
-      for (let k = 0; k < 220; k++) {                      // projector ring
-        const al = Math.PI * 2 * k / 220;
-        pts.push([Math.cos(al) * 5.6, -1.85, Math.sin(al) * 5.6, 0, 1, 0, 1]);
-      }
-      return new Float32Array(pts.flat());
+      return { pts, W, H };
     })();
-    const RAMP = '.,-~:;=!*#$@';
 
     function hologram(canvas) {
       const ctx = canvas.getContext('2d');
       const still = matchMedia('(prefers-reduced-motion: reduce)');
-      const light = (() => { const l = [-0.45, 0.75, -0.55], n = Math.hypot(...l); return l.map((v) => v / n); })();
       let cols = 0, rows = 0, cw = 4, ch = 7, last = 0;
+      // one spider character per cell, like the original drawing: size the font to the box instead of
+      // stretching the drawing, which would leave gaps between characters
       function size() {
         const r = canvas.getBoundingClientRect(), dpr = window.devicePixelRatio || 1;
         if (!r.width) return;
         canvas.width = r.width * dpr; canvas.height = r.height * dpr;
         ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-        ctx.font = `700 ${ch}px ${getComputedStyle(root).getPropertyValue('--mono')}`;
+        const mono = getComputedStyle(root).getPropertyValue('--mono');
+        ctx.font = `700 10px ${mono}`;
+        const ratio = ctx.measureText('M').width / 10;  // glyph width per px of font size
+        ch = Math.max(4, Math.min(r.width / (POINTS.W * 1.3 * ratio), r.height / (POINTS.H * 1.45)));
+        ctx.font = `700 ${ch}px ${mono}`;
         cw = ctx.measureText('M').width;
         cols = Math.floor(r.width / cw); rows = Math.floor(r.height / ch);
       }
@@ -459,44 +460,33 @@
         if (visible && now - last > 40) {
           last = now;
           if (!cols) size();
-          const t = still.matches ? 0.9 : now / 1000;
-          const A = t * 0.8, B = 0.5 + Math.sin(t * 0.5) * 0.06;    // spin, and look slightly from above
-          const cA = Math.cos(A), sA = Math.sin(A), cB = Math.cos(B), sB = Math.sin(B);
-          // fit using the nearest depth (the ring's front edge), where perspective magnifies the most
-          const aspect = ch / cw, K2 = 22;
-          const K1 = Math.min(cols * 0.47 / 6.0, rows * aspect * 0.47 / 4.7) * (K2 - 6);
-          const n = cols * rows, zbuf = new Float32Array(n).fill(Infinity), lum = new Float32Array(n).fill(-1);
-          for (let i = 0; i < MODEL.length; i += 7) {
-            const x = MODEL[i], y = MODEL[i + 1] - 0.1, z = MODEL[i + 2] + 0.5;
-            // rotate around Y, then tilt around X
-            const x1 = x * cA + z * sA, z1 = -x * sA + z * cA;
-            const y2 = y * cB - z1 * sB, z2 = y * sB + z1 * cB;
-            const ooz = 1 / (z2 + K2);
-            const sx = Math.round(cols / 2 + K1 * x1 * ooz), sy = Math.round(rows / 2 - K1 * y2 * ooz / aspect);
+          const t = still.matches ? 0 : now / 1000;
+          const a = Math.sin(t * 0.7) * 0.55, b = 0.1 + Math.sin(t * 0.45) * 0.06;
+          const ca = Math.cos(a), sa = Math.sin(a), cb = Math.cos(b), sb = Math.sin(b);
+          const { pts, W, H } = POINTS, D = W * 2.6;  // mild perspective: enough for parallax, not enough to warp
+          const aspect = ch / cw, s = 1;  // model units are cells: x in columns, y in half rows
+          const n = cols * rows, zbuf = new Float32Array(n).fill(Infinity), tierAt = new Int8Array(n).fill(-1), glyph = new Array(n);
+          for (const [x, y, z, lvl, chr] of pts) {
+            const rx = x * ca + z * sa, rz = -x * sa + z * ca;
+            const ry = y * cb - rz * sb, rz2 = y * sb + rz * cb;
+            const f = D / (D + rz2);
+            const sx = Math.round(cols / 2 + rx * f * s), sy = Math.round(rows / 2 - 1 + ry * f / 2);
             if (sx < 0 || sy < 0 || sx >= cols || sy >= rows) continue;
             const k = sy * cols + sx;
-            if (z2 >= zbuf[k]) continue;
-            zbuf[k] = z2;
-            if (MODEL[i + 6] === 1) { lum[k] = 0.02; continue; }
-            const nx = MODEL[i + 3], ny = MODEL[i + 4], nz = MODEL[i + 5];
-            const nx1 = nx * cA + nz * sA, nz1 = -nx * sA + nz * cA;
-            const ny2 = ny * cB - nz1 * sB, nz2 = ny * sB + nz1 * cB;
-            // ambient keeps the shadow side readable as shape instead of dropping to nothing
-            lum[k] = Math.min(0.999, 0.22 + 0.78 * Math.max(0, nx1 * light[0] + ny2 * light[1] + nz2 * light[2]));
+            if (rz2 < zbuf[k]) { zbuf[k] = rz2; tierAt[k] = lvl; glyph[k] = chr; }
           }
           const css = getComputedStyle(root);
           const colors = [css.getPropertyValue('--red-deep'), css.getPropertyValue('--red-mid'), css.getPropertyValue('--red'),
-                          root.dataset.theme === 'light' ? '#6a0a10' : '#ff9a9a'];
+                          root.dataset.theme === 'light' ? '#6a0a10' : '#ff8a8a'];
           ctx.clearRect(0, 0, canvas.width, canvas.height);
           ctx.textBaseline = 'top';
-          ctx.globalAlpha = still.matches ? 1 : 0.88 + Math.random() * 0.12;   // hologram flicker
+          ctx.globalAlpha = still.matches ? 1 : 0.86 + Math.random() * 0.14;   // hologram flicker
           for (let y = 0; y < rows; y++) {
-            const shift = !still.matches && Math.random() < 0.01 ? (Math.random() < 0.5 ? -1 : 1) * cw : 0;  // rare glitch
+            const shift = !still.matches && Math.random() < 0.004 ? (Math.random() < 0.5 ? -1 : 1) * cw : 0;  // rare glitch
             const lines = ['', '', '', ''];
             for (let x = 0; x < cols; x++) {
-              const L = lum[y * cols + x], tierK = L < 0 ? -1 : Math.min(3, Math.floor(L * 4));
-              const glyph = L < 0 ? ' ' : RAMP[Math.min(RAMP.length - 1, Math.floor(L * RAMP.length))];
-              for (let c = 0; c < 4; c++) lines[c] += tierK === c ? glyph : ' ';
+              const k = y * cols + x;
+              for (let c = 0; c < 4; c++) lines[c] += tierAt[k] === c ? glyph[k] : ' ';
             }
             for (let c = 0; c < 4; c++) if (lines[c].trim()) { ctx.fillStyle = colors[c]; ctx.fillText(lines[c], shift, y * ch); }
           }
