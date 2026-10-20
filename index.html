@@ -113,7 +113,7 @@
     .holo { display: block; width: 100%; height: 100%; }
     .holo-wrap::after { content: ""; position: absolute; inset: 0; pointer-events: none;
       background: repeating-linear-gradient(0deg, rgba(255, 42, 42, .07) 0 1px, transparent 1px 3px); }
-    .spider.holo-wrap { height: 240px; padding: 0; }
+    .spider.holo-wrap { height: 260px; padding: 0; }
 
     /* start screen: a small "window" with two ways in */
     body.gated { overflow: hidden; }
@@ -127,7 +127,7 @@
     .win .titlebar { display: flex; align-items: center; gap: 8px; padding: 7px 10px; border-bottom: 1px solid var(--rule-strong); color: var(--muted); font-size: 12px; }
     .win .titlebar .ctl { color: var(--faint); letter-spacing: 2px; }
     .win .body { padding: 6px 20px 16px; }
-    .win .holo-wrap { height: 210px; margin: 0 -8px; }
+    .win .holo-wrap { height: 250px; margin: 0 -8px; }
     .win .name { text-align: center; color: var(--red); font-size: 22px; font-weight: 700; letter-spacing: .02em; margin-top: 2px; }
     .win .role { text-align: center; color: var(--muted); font-size: 12px; padding: 8px 0 14px; border-top: 1px solid var(--rule); margin-top: 8px; }
     .win .label { color: var(--muted); font-size: 11px; letter-spacing: .12em; margin: 2px 0 8px; }
@@ -300,38 +300,6 @@
   <script>
     // 5x7 glyphs, one 5-bit row per number
     const FONT = {"A":[14,17,17,31,17,17,17],"B":[30,17,17,30,17,17,30],"C":[14,17,16,16,16,17,14],"D":[28,18,17,17,17,18,28],"E":[31,16,16,30,16,16,31],"F":[31,16,16,30,16,16,16],"G":[14,17,16,23,17,17,15],"H":[17,17,17,31,17,17,17],"I":[14,4,4,4,4,4,14],"J":[7,2,2,2,2,18,12],"K":[17,18,20,24,20,18,17],"L":[16,16,16,16,16,16,31],"M":[17,27,21,21,17,17,17],"N":[17,17,25,21,19,17,17],"O":[14,17,17,17,17,17,14],"P":[30,17,17,30,16,16,16],"Q":[14,17,17,17,21,18,13],"R":[30,17,17,30,20,18,17],"S":[15,16,16,14,1,1,30],"T":[31,4,4,4,4,4,4],"U":[17,17,17,17,17,17,14],"V":[17,17,17,17,17,10,4],"W":[17,17,17,21,21,21,10],"X":[17,17,10,4,10,17,17],"Y":[17,17,17,10,4,4,4],"Z":[31,1,2,4,8,16,31],"0":[14,17,19,21,25,17,14],"1":[4,12,4,4,4,4,14],"2":[14,17,1,2,4,8,31],"3":[31,2,4,2,1,17,14],"4":[2,6,10,18,31,2,2],"5":[31,16,30,1,1,17,14],"6":[6,8,16,30,17,17,14],"7":[31,1,2,4,8,8,8],"8":[14,17,17,14,17,17,14],"9":[14,17,17,15,1,2,12],"/":[0,1,2,4,8,16,0],"-":[0,0,0,31,0,0,0],".":[0,0,0,0,0,12,12],":":[0,12,12,0,12,12,0]," ":[0,0,0,0,0,0,0]};
-    const SPIDER = `                        :--=--:.
-                       *%+-:.  .:                   .:==--:.
-                      -%:      ..                 -*%##+----:.::
-                     :%=       =             .-+**=:.        --
-                    :%#       ==        :--*#*+:          .--
-                    =@*      :*.      .*@%+-..          .==.
-                    .*#+.   .*-      :%%=   .         .==:
-                   . .%%....++    ...#%.    .       :==.
-                  .  .-@=..=#-...  .#%.    .      .==.
-              ===.   . #%.:*+    ..+@-     .    :+#***+=--::.
-             .#+%#-  . -@*=+:...  :@+..    :-+*****=:     ..
-              - :+@=. ..%@-:      #%: :-+*%#*=...       ...
-              :.. -**:  +%++= .  :@=.*%%#+.   .      .-:.
-         =-.#%#-:. .*@*=#@@%**#:-%+-%#=:.   ..    .-+=.
-       .#@*@@++#@@%@@@@@@@@@@@%@#*##-.  .  .   :-++-.
-      .%%=+-.:+@@@*=+%@@@@@@@@%#%*:..  .  ::-=++-.
-      +*:-.. :@@%+++#@@@@@@@@@@@@%-....:-++=-:
-    .#*.:   .#@@@@@@@@@@@@@%@@%++##+=-:::.
-   :*#  ....-@@@@@@@@@@@@%#@@@#===*#=. :
-  .#*.     .:%@@@@@@@@@@%%@@@+=-:. +#= .
-  *#..      .+@@@@@@@@@@@@@%+=-    .:*=
-  #-    ... :=#@@@@@@@@@@@#**+=....   --
-  #........:==+*%%%@@@@@%#++=-:::.     :-
- .+      .--:--==++++#@%*+-     .:::.   .:
- .:    :-:    ......+*#*+.          ......
- :  .:-.        .  -%=++.
- :..:            ..#:-=.
-  .              .+::-
-                 -:::
-                ::-.
-               .-:
-               :`;
 
     const i18n = {
       role: { es: 'Full Stack Java Developer · ciberseguridad (entry)', en: 'Full Stack Java Developer · cybersecurity (entry)' },
@@ -418,26 +386,65 @@
     }
     document.getElementById('banner').textContent = banner('TADDHEO');
 
-    /* Spider as an ASCII hologram. Each character becomes a 3D point (denser characters, the body, get more
-       depth than the thin legs), the cloud spins around Y with a slight tilt, is projected with perspective,
-       z-buffered onto a character grid and drawn back as ASCII in four reds. */
-    const tier = (c) => ' .:-'.includes(c) ? 0 : '=+*'.includes(c) ? 1 : '#%'.includes(c) ? 2 : 3;
-    const POINTS = (() => {
-      const lines = SPIDER.split('\n'), W = Math.max(...lines.map((l) => l.length)), H = lines.length, pts = [];
-      lines.forEach((line, y) => [...line].forEach((ch, x) => {
-        if (ch === ' ') return;
-        const lvl = tier(ch);
-        const depth = lvl + 1;  // legs get some body too, or the side view collapses to a line
-        for (let k = -depth; k <= depth; k++) pts.push([x - W / 2, (y - H / 2) * 2, k * 2.2, lvl]);
-      }));
-      return { pts, W, H };
+    /* Spider hologram: a real 3D model (two body spheres, eight jointed legs, fangs) sampled into points with
+       normals, spun and lit like the classic ASCII donut: z-buffer, perspective, and the character picked by how
+       much light each point gets. A dotted ring underneath plays the projector. */
+    const MODEL = (() => {
+      const pts = [];  // [x, y, z, nx, ny, nz, kind]  kind 0 = body, 1 = ring
+      const ellipsoid = (cx, cy, cz, rx, ry, rz, n) => {
+        for (let i = 0; i <= n; i++) {
+          const th = Math.PI * i / n;
+          for (let j = 0; j < n * 2; j++) {
+            const ph = Math.PI * j / n, nx = Math.sin(th) * Math.cos(ph), ny = Math.cos(th), nz = Math.sin(th) * Math.sin(ph);
+            const l = Math.hypot(nx / rx, ny / ry, nz / rz) || 1;
+            pts.push([cx + rx * nx, cy + ry * ny, cz + rz * nz, nx / rx / l, ny / ry / l, nz / rz / l, 0]);
+          }
+        }
+      };
+      const tube = (p, q, r0, r1) => {
+        const d = [q[0] - p[0], q[1] - p[1], q[2] - p[2]], len = Math.hypot(...d), u = d.map((v) => v / len);
+        const a = Math.abs(u[1]) < 0.9 ? [0, 1, 0] : [1, 0, 0];
+        let v = [u[1] * a[2] - u[2] * a[1], u[2] * a[0] - u[0] * a[2], u[0] * a[1] - u[1] * a[0]];
+        const vl = Math.hypot(...v); v = v.map((c) => c / vl);
+        const w = [u[1] * v[2] - u[2] * v[1], u[2] * v[0] - u[0] * v[2], u[0] * v[1] - u[1] * v[0]];
+        const steps = Math.ceil(len * 14);
+        for (let i = 0; i <= steps; i++) {
+          const t = i / steps, r = r0 + (r1 - r0) * t;
+          for (let k = 0; k < 10; k++) {
+            const al = Math.PI * 2 * k / 10, c = Math.cos(al), s = Math.sin(al);
+            const n = [v[0] * c + w[0] * s, v[1] * c + w[1] * s, v[2] * c + w[2] * s];
+            pts.push([p[0] + d[0] * t + n[0] * r, p[1] + d[1] * t + n[1] * r, p[2] + d[2] * t + n[2] * r, ...n, 0]);
+          }
+        }
+        ellipsoid(q[0], q[1], q[2], r1 * 1.15, r1 * 1.15, r1 * 1.15, 4);  // joint
+      };
+      ellipsoid(0, 0.15, 0.75, 1.0, 0.82, 1.1, 34);      // cephalothorax (front = +z)
+      ellipsoid(0, 0.65, -1.9, 1.65, 1.4, 2.05, 46);     // abdomen
+      for (const side of [-1, 1]) {
+        [62, 24, -14, -52].forEach((deg, i) => {
+          const f = deg * Math.PI / 180, dx = side * Math.cos(f), dz = Math.sin(f);
+          const base = [0.6 * dx, 0.2, 0.75 + 0.75 * dz];
+          const reach = i === 0 || i === 3 ? 1.15 : 1;      // front and back pairs are longer
+          const knee = [base[0] + dx * 1.5 * reach, base[1] + 1.45, base[2] + dz * 1.5 * reach];
+          const ankle = [knee[0] + dx * 1.7 * reach, knee[1] - 0.35, knee[2] + dz * 1.7 * reach];
+          const foot = [ankle[0] + dx * 0.9 * reach, -1.75, ankle[2] + dz * 0.9 * reach];
+          tube(base, knee, 0.2, 0.16); tube(knee, ankle, 0.16, 0.12); tube(ankle, foot, 0.12, 0.06);
+        });
+        tube([side * 0.28, -0.1, 1.55], [side * 0.18, -0.6, 1.85], 0.12, 0.05);  // fangs
+      }
+      for (let k = 0; k < 220; k++) {                      // projector ring
+        const al = Math.PI * 2 * k / 220;
+        pts.push([Math.cos(al) * 5.6, -1.85, Math.sin(al) * 5.6, 0, 1, 0, 1]);
+      }
+      return new Float32Array(pts.flat());
     })();
-    const RAMP = '.:-=+*#%@';
+    const RAMP = '.,-~:;=!*#$@';
 
     function hologram(canvas) {
       const ctx = canvas.getContext('2d');
       const still = matchMedia('(prefers-reduced-motion: reduce)');
-      let cols = 0, rows = 0, cw = 6, ch = 9, last = 0;
+      const light = (() => { const l = [-0.45, 0.75, -0.55], n = Math.hypot(...l); return l.map((v) => v / n); })();
+      let cols = 0, rows = 0, cw = 4, ch = 7, last = 0;
       function size() {
         const r = canvas.getBoundingClientRect(), dpr = window.devicePixelRatio || 1;
         if (!r.width) return;
@@ -449,46 +456,49 @@
       }
       function draw(now) {
         const visible = canvas.offsetParent !== null && !document.hidden && !canvas.closest('.gone, body.gated #site');
-        if (visible && now - last > 45) {
+        if (visible && now - last > 40) {
           last = now;
           if (!cols) size();
-          const t = still.matches ? 0.6 : now / 1000;
-          // eased turntable: lingers facing front and back, sweeps quickly through the thin side view
-          const th = t * 0.75, a = th - 0.45 * Math.sin(2 * th), b = 0.18 + Math.sin(t * 0.4) * 0.08;
-          const ca = Math.cos(a), sa = Math.sin(a), cb = Math.cos(b), sb = Math.sin(b);
-          const { pts, W, H } = POINTS, D = W * 1.7;
-          const s = Math.min(cols / W, rows / H) * 0.92;
-          const zbuf = new Float32Array(cols * rows).fill(Infinity), cell = new Int8Array(cols * rows).fill(-1);
-          const glyph = new Uint8Array(cols * rows);
-          for (const [x, y, z, lvl] of pts) {
-            const rx = x * ca + z * sa, rz = -x * sa + z * ca;
-            const ry = y * cb - rz * sb, rz2 = y * sb + rz * cb;
-            const f = D / (D + rz2);
-            const sx = Math.round(cols / 2 + rx * f * s), sy = Math.round(rows / 2 + (ry / 2) * f * s);
+          const t = still.matches ? 0.9 : now / 1000;
+          const A = t * 0.8, B = 0.5 + Math.sin(t * 0.5) * 0.06;    // spin, and look slightly from above
+          const cA = Math.cos(A), sA = Math.sin(A), cB = Math.cos(B), sB = Math.sin(B);
+          // fit using the nearest depth (the ring's front edge), where perspective magnifies the most
+          const aspect = ch / cw, K2 = 22;
+          const K1 = Math.min(cols * 0.47 / 6.0, rows * aspect * 0.47 / 4.7) * (K2 - 6);
+          const n = cols * rows, zbuf = new Float32Array(n).fill(Infinity), lum = new Float32Array(n).fill(-1);
+          for (let i = 0; i < MODEL.length; i += 7) {
+            const x = MODEL[i], y = MODEL[i + 1] - 0.1, z = MODEL[i + 2] + 0.5;
+            // rotate around Y, then tilt around X
+            const x1 = x * cA + z * sA, z1 = -x * sA + z * cA;
+            const y2 = y * cB - z1 * sB, z2 = y * sB + z1 * cB;
+            const ooz = 1 / (z2 + K2);
+            const sx = Math.round(cols / 2 + K1 * x1 * ooz), sy = Math.round(rows / 2 - K1 * y2 * ooz / aspect);
             if (sx < 0 || sy < 0 || sx >= cols || sy >= rows) continue;
-            const i = sy * cols + sx;
-            if (rz2 < zbuf[i]) {
-              zbuf[i] = rz2;
-              // nearer points read brighter and denser, which sells the depth while it turns
-              const light = Math.min(1, Math.max(0, (lvl + 1.4) / 4.4 * (0.7 + 0.3 * (1 - (rz2 + W / 2) / W))));
-              cell[i] = Math.min(3, Math.round(light * 3.4));
-              glyph[i] = Math.min(RAMP.length - 1, Math.round(light * (RAMP.length - 1)));
-            }
+            const k = sy * cols + sx;
+            if (z2 >= zbuf[k]) continue;
+            zbuf[k] = z2;
+            if (MODEL[i + 6] === 1) { lum[k] = 0.02; continue; }
+            const nx = MODEL[i + 3], ny = MODEL[i + 4], nz = MODEL[i + 5];
+            const nx1 = nx * cA + nz * sA, nz1 = -nx * sA + nz * cA;
+            const ny2 = ny * cB - nz1 * sB, nz2 = ny * sB + nz1 * cB;
+            // ambient keeps the shadow side readable as shape instead of dropping to nothing
+            lum[k] = Math.min(0.999, 0.22 + 0.78 * Math.max(0, nx1 * light[0] + ny2 * light[1] + nz2 * light[2]));
           }
           const css = getComputedStyle(root);
           const colors = [css.getPropertyValue('--red-deep'), css.getPropertyValue('--red-mid'), css.getPropertyValue('--red'),
-                          root.dataset.theme === 'light' ? '#6a0a10' : '#ff8a8a'];
+                          root.dataset.theme === 'light' ? '#6a0a10' : '#ff9a9a'];
           ctx.clearRect(0, 0, canvas.width, canvas.height);
           ctx.textBaseline = 'top';
-          ctx.globalAlpha = still.matches ? 1 : 0.86 + Math.random() * 0.14;  // hologram flicker
+          ctx.globalAlpha = still.matches ? 1 : 0.88 + Math.random() * 0.12;   // hologram flicker
           for (let y = 0; y < rows; y++) {
-            const shift = !still.matches && Math.random() < 0.012 ? (Math.random() < 0.5 ? -1 : 1) * cw : 0;  // rare glitch
+            const shift = !still.matches && Math.random() < 0.01 ? (Math.random() < 0.5 ? -1 : 1) * cw : 0;  // rare glitch
             const lines = ['', '', '', ''];
             for (let x = 0; x < cols; x++) {
-              const c = cell[y * cols + x];
-              for (let k = 0; k < 4; k++) lines[k] += c === k ? RAMP[glyph[y * cols + x]] : ' ';
+              const L = lum[y * cols + x], tierK = L < 0 ? -1 : Math.min(3, Math.floor(L * 4));
+              const glyph = L < 0 ? ' ' : RAMP[Math.min(RAMP.length - 1, Math.floor(L * RAMP.length))];
+              for (let c = 0; c < 4; c++) lines[c] += tierK === c ? glyph : ' ';
             }
-            for (let k = 0; k < 4; k++) if (lines[k].trim()) { ctx.fillStyle = colors[k]; ctx.fillText(lines[k], shift, y * ch); }
+            for (let c = 0; c < 4; c++) if (lines[c].trim()) { ctx.fillStyle = colors[c]; ctx.fillText(lines[c], shift, y * ch); }
           }
           ctx.globalAlpha = 1;
         }
